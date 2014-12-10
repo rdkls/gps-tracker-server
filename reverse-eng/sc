@@ -1,0 +1,6 @@
+#!/bin/bash
+#DEST_IP=localhost
+DEST_IP=202.104.150.75
+DEST_PORT=9000
+#socat -s -v -d -d TCP4-LISTEN:9000 TCP4:${DEST_IP}:${DEST_PORT} 2>out
+socat -s -v -d -d TCP4-LISTEN:9000 TCP4:${DEST_IP}:${DEST_PORT},sourceport=56076,reuseaddr  2>out
