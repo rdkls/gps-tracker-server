@@ -22,7 +22,6 @@ class GPSDevice():
         self.imei = imei
         self.ipaddr = ipaddr
         self.adapter = None
-        self.last_data = None
         self.responses = []
         # TODO - check for imei / ip and retrieve if possible
 
@@ -34,17 +33,19 @@ class GPSDevice():
         except IndexError:
             return None
 
-    def sent(self, data):
+    def sent(self, datastring):
         if not self.adapter:
-            self.adapter = Adapter.detect(data)
+            self.adapter = Adapter.detect(datastring)
+        if not self.adapter:
+            raise Exception("Coudln't determine adapter from datastring: %s" % datastring)
 
         # Set IMEI, if needed
-        message = self.adapter.decode(data)
+        message = self.adapter.decode(datastring)
         if not self.imei:
             self.imei = message.imei
 
         # Determine any stock responses for this type of adapter (e.g. LOAD, ON)
-        response = self.adapter.response_to(data)
+        response = self.adapter.response_to(datastring)
         if response:
             self.responses.append(response)
 
