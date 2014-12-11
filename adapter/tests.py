@@ -1,4 +1,4 @@
-from .tk102 import tk102
+from tk102 import tk102
 
 tk102_heartbeat_string = '865328021048409;'
 tk102_location_low_string = 'imei:865328021048409,tracker,141210172556,0411959136,L,,,0BD4,,7A78,,,,,0,0,0.0%,,;'
@@ -7,25 +7,23 @@ tk102_init_string = '##,imei:865328021048409,A;'
 
 def test_tk102_location_low():
     message = tk102.decode(tk102_location_low_string)
-    print message
     assert(message)
-    assert(str==type(message.imei))
+    assert(unicode==type(message.imei))
 
 def test_tk102_location_full():
     message = tk102.decode(tk102_location_full_string)
-    print message
     assert(message)
-    assert(str==type(message.imei))
+    assert(unicode==type(message.imei))
 
 def test_tk102_init():
     message = tk102.decode(tk102_init_string)
     assert(message)
-    assert(str==type(message.imei))
+    assert(unicode==type(message.imei))
 
 def test_tk102_hb():
     message = tk102.decode(tk102_heartbeat_string)
     assert(message)
-    assert(str==type(message.imei))
+    assert(unicode==type(message.imei))
 
 def test_tk102_bad():
     message = tk102.decode('A BAD DATASTRING')

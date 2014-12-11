@@ -21,3 +21,6 @@ Nothing fancy yet!
 
 ## Trying the Device Gateway ##
 In another tab: `cat sample-reqs/tkip102-1.txt | nc localhost 9000`
+
+## Running Tests ##
+With virtualenv activated, just run 'nosetests'
