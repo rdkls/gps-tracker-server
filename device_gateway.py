@@ -18,13 +18,13 @@ def handle(sock, (clientip, clientport)):
             break
         print 'read %s' % data
         device.sent(data)
-        for response in device.responses:
+        response = device.pop_response()
+        while response:
             fp.write(response)
             fp.flush()
-        fp.write(device.imei)
+            response = device.pop_response()
         fp.flush()
 
-    fp.write('ooook then!')
     # receive data from a device
     # at this point we'll just have IP, and data
     # TODO - lookup by IP, some robustness / security on that

@@ -1,7 +1,7 @@
 import re
 import config
 from .adapter import Adapter
-from .message import Message
+from models import Message
 
 class tk102(Adapter):
     @classmethod
@@ -64,13 +64,18 @@ class tk102(Adapter):
         """
         message asking that device report location once
         #resp = '**,imei:{imei},{cmd}'.format(imei=imei, cmd='B')
-
-        response to initialization
-        LOAD
-
-        response to heartbeat
-        ON
         """
-        
-        pass
+        if config.MESSAGE_TYPE_REQ_LOCATION == message.message_type:
+            resp = '**,imei:{imei},{cmd}'.format(imei=message.imei, cmd='B')
+            return resp
+
+    @classmethod
+    def response_to(cls, data):
+        message = cls.decode(data)
+        if not message:
+            return
+        if config.MESSAGE_TYPE_INIT == message.message_type:
+            return 'LOAD'
+        elif config.MESSAGE_TYPE_HEARTBEAT == message.message_type:
+            return 'ON'
 

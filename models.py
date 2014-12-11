@@ -1,4 +1,17 @@
+import config
+import mongoengine
+from adapter.adapter import Adapter
 
+mongoengine.connect(config.MONGO_DBNAME, host=config.MONGO_HOST, port=config.MONGO_PORT)
+
+class Message(mongoengine.Document):
+    message_type = mongoengine.StringField()
+    imei = mongoengine.StringField()
+    message_type = mongoengine.StringField()
+    message_datastring = mongoengine.StringField()
+    
+    def __str__(self):
+        return u'Message type %s, IMEI %s' % (self.message_type, self.imei)
 
 class GPSDevice():
     """ Base class for single GPS device
@@ -12,10 +25,8 @@ class GPSDevice():
         self.last_data = None
         self.responses = []
         # TODO - check for imei / ip and retrieve if possible
-        pass
 
-    @property
-    def get_response(self):
+    def pop_response(self):
         """ Get the current response, taking into account data read, and messages waiting
         """
         try:
@@ -24,10 +35,8 @@ class GPSDevice():
             return None
 
     def sent(self, data):
-        self.last_data = data
         if not self.adapter:
-            from adapter.util import detect_adapter
-            self.adapter = detect_adapter(data)
+            self.adapter = Adapter.detect(data)
 
         # Set IMEI, if needed
         message = self.adapter.decode(data)
@@ -39,4 +48,7 @@ class GPSDevice():
         if response:
             self.responses.append(response)
 
-        # TODO Get any response messages from the Queue
+        # TODO - hardcode
+        message = Message(imei=self.imei, message_type=config.MESSAGE_TYPE_REQ_LOCATION)
+        response = self.adapter.encode(message)
+        self.responses.append(response)

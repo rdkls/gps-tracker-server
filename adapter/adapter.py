@@ -1,22 +1,21 @@
-from .message import Message
 
 class Adapter():
     @classmethod
     def decode(cls, datastring):
         # string data -> return standard 'Message'
-        raise NotImplementedException()
+        raise NotImplementedError()
 
     @classmethod
     def encode(cls, datastring):
         # Message -> string data
         # return standard 'Message'
-        raise NotImplementedException()
+        raise NotImplementedError()
 
     @classmethod
     def response_to(cls, datastring):
         # Message -> string data
         # return standard 'Message'
-        raise NotImplementedException()
+        raise NotImplementedError()
 
     @classmethod
     def detect(cls, data):
