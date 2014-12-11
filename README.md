@@ -3,6 +3,11 @@ A basic python server for managing GPS Tracker Devices.
 
 Currently only looking at Coban TK102, since that's what I have.
 
+## System Requirements ##
+* python
+* virtualenv
+* mongodb
+
 ## Setup ##
 Nothing too strange here. Using virtualenv recommended = no system-wide packages
 * `mkdir venv && virtualenv venv/gps`
