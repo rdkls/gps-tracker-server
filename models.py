@@ -1,4 +1,5 @@
 import config
+import datetime
 import mongoengine
 from adapter.adapter import Adapter
 
@@ -6,12 +7,24 @@ mongoengine.connect(config.MONGO_DBNAME, host=config.MONGO_HOST, port=config.MON
 
 class Message(mongoengine.Document):
     message_type = mongoengine.StringField()
+    state = mongoengine.StringField(default=config.MESSAGE_STATE_INITIAL)
     imei = mongoengine.StringField()
-    message_type = mongoengine.StringField()
     message_datastring = mongoengine.StringField()
+    created = mongoengine.DateTimeField(default=datetime.datetime.utcnow())
     
+    @classmethod
+    def dequeue_response(self, imei):
+        collection = mongoengine.connection.get_db()['message']
+        resp = collection.find_and_modify(
+            query = {'imei': imei, 'state': config.MESSAGE_STATE_INITIAL},
+            sort = {'created': 1},
+            update = {'$set': {'state': config.MESSAGE_STATE_SENT}},
+        )
+        if resp:
+            return Message(**resp)
+
     def __str__(self):
-        return u'Message type %s, IMEI %s' % (self.message_type, self.imei)
+        return u'Message type: %s, IMEI: %s, state: %s' % (self.message_type, self.imei, self.state)
 
 class GPSDevice():
     """ Base class for single GPS device
@@ -49,7 +62,9 @@ class GPSDevice():
         if response:
             self.responses.append(response)
 
+        # Get & send responses from queue
         # TODO - hardcode
-        message = Message(imei=self.imei, message_type=config.MESSAGE_TYPE_REQ_LOCATION)
-        response = self.adapter.encode(message)
-        self.responses.append(response)
+        #message = Message(imei=self.imei, message_type=config.MESSAGE_TYPE_REQ_LOCATION)
+        #response = self.adapter.encode(message)
+        #self.responses.append(response)
+
