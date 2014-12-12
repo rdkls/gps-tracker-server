@@ -23,13 +23,16 @@ class tk102(Adapter):
             '(?P<time_utc>\d+\.\d+)?,' + \
             '(?P<validity>[AV]),' + \
             '(?P<latitude>\d+\.\d+),' + \
-            '(?P<latitude_direction>)[NS],' + \
+            '(?P<latitude_hemisphere>[NS]),' + \
             '(?P<longitude>\d+\.\d+),' + \
-            '(?P<longitude_direction>[EW]),' + \
+            '(?P<longitude_hemisphere>[EW]),' + \
+            ''
+        """
             '(?P<speed>\d+\.\d+)?,' + \
             '(?P<course>\d+\.\d+)?,' + \
             '(?P<altitude>\d+\.\d+)?,' + \
             '.*;'
+        """
 
         # e.g. imei:865328021048409,tracker,141210172556,0411959136,L,,,0BD4,,7A78,,,,,0,0,0.0%,,;
         re_location_low = '^imei:(?P<imei>\d{15}),' + \
@@ -44,21 +47,51 @@ class tk102(Adapter):
             '(?P<unknown_2>\w*),' + \
             ''
 
-        message = None
         if re.match(re_init, datastring):
             imei = re.match(re_init, datastring).group('imei')
-            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_INIT)
+            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_INIT, message_datastring=datastring)
         elif re.match(re_heartbeat, datastring):
             imei = re.match(re_heartbeat, datastring).group('imei')
-            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_HEARTBEAT)
+            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_HEARTBEAT, message_datastring=datastring)
         elif re.match(re_location_full, datastring):
-            imei = re.match(re_location_full, datastring).group('imei')
-            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_LOCATION_FULL)
-            # todo - set other message properties
+            match = re.match(re_location_full, datastring)
+            imei = match.group('imei')
+            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_LOCATION_FULL, message_datastring=datastring)
+
+            latitude = match.group('latitude')
+            latitude_hemisphere = match.group('latitude_hemisphere')
+            longitude = match.group('longitude')
+            longitude_hemisphere = match.group('longitude_hemisphere')
+
+            # Latitude and Longitude need to be converted from this proto's spec to standard decimal
+            # Locations come as HHHHMM.MMMM
+            # hours are any number of digits, followed by
+            # seconds which are 2-digit integer part, period, fractional part
+            re_location = '^(\d+)(\d{2}\.\d+)$'
+
+            (h, m) = re.match(re_location, latitude).groups()
+            h = float(h)
+            m = float(m)
+            latitude = h + m/60
+            if 'S' == latitude_hemisphere:
+                latitude = -latitude
+
+            (h, m) = re.match(re_location, longitude).groups()
+            h = float(h)
+            m = float(m)
+            longitude = h + m/60
+            if 'W' == longitude_hemisphere:
+                longitude = -longitude
+
+            message.latitude = latitude
+            message.longitude = longitude
+            # TODO - set other message properties
         elif re.match(re_location_low, datastring):
             imei = re.match(re_location_low, datastring).group('imei')
-            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_LOCATION_LOW)
-            # todo - set other message properties
+            message = Message(imei=imei, message_type=config.MESSAGE_TYPE_LOCATION_LOW, message_datastring=datastring)
+            # TODO - set other message properties
+        else:
+            return None
         return message
 
     @classmethod

@@ -19,3 +19,5 @@ MESSAGE_STATE_INITIAL           = 'initial'
 #MESSAGE_STATE_PENDING          = 'pending'
 MESSAGE_STATE_SENT              = 'sent'
 
+GOOGLE_MAPS_URI_FORMAT          = 'https://maps.google.com.au/?q={latitude},{longitude}'
+

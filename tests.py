@@ -1,3 +1,4 @@
+import config
 from models import Message
 from models import GPSDevice
 
@@ -5,6 +6,12 @@ tk102_heartbeat_string = '865328021048409;'
 tk102_location_low_string = 'imei:865328021048409,tracker,141210172556,0411959136,L,,,0BD4,,7A78,,,,,0,0,0.0%,,;'
 tk102_location_full_string = 'imei:865328021048409,tracker,141210110820,,F,030823.000,A,3745.9502,S,14458.2049,E,1.83,119.35,,0,0,0.0%,,;'
 tk102_init_string = '##,imei:865328021048409,A;'
+
+def test_location_req():
+    m = Message()
+    m.imei = '865328021048409'
+    m.message_type = config.MESSAGE_TYPE_REQ_LOCATION
+    m.save()
 
 def test_message_fifo():
     imei = 'test1'
@@ -64,3 +71,7 @@ def test_gpsdevice_tk102_response_hb():
     assert(d.imei)
     r = d.pop_response()
     assert('ON'==r)
+
+def test_gpsdevice_tk102_response_location():
+    d = GPSDevice()
+    d.sent(tk102_location_full_string)
