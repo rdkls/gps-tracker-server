@@ -14,16 +14,15 @@ def handle(sock, (clientip, clientport)):
 
     while True:
         data = sock.recv(config.DEVICE_GATEWAY_RECV_SIZE)
-        print 'read %s' % data
         if not data:
             break
-        print 'recv from %s: %s' % (clientip, data)
+        print '%s > %s' % (clientip, data)
         device.sent(data)
 
         resp = device.pop_response()
         while resp:
             sock.send(resp)
-            print 'send to   %s: %s' % (clientip, resp)
+            print '%s < %s' % (clientip, resp)
             resp = device.pop_response()
 
 if __name__ == '__main__':
