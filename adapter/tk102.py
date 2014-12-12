@@ -4,16 +4,18 @@ from .adapter import Adapter
 from models import Message
 
 class tk102(Adapter):
+    delimiter = ';'
+
     @classmethod
     def decode(cls, datastring):
         # e.g. ##,imei:865328021048409,A;
-        re_init = '^##,imei:(?P<imei>\d+),A;$'
+        re_init = '^##,imei:(?P<imei>\d{15}),A'
 
         # e.g. 865328021048409;
-        re_heartbeat = '^(?P<imei>\d+);$'
+        re_heartbeat = '^(?P<imei>\d{15})'
 
         # e.g. imei:865328021048409,tracker,141210110820,,F,030823.000,A,3745.9502,S,14458.2049,E,1.83,119.35,,0,0,0.0%,,;
-        re_location_full = '^imei:(?P<imei>\d+),' + \
+        re_location_full = '^imei:(?P<imei>\d{15}),' + \
             'tracker,' + \
             '(?P<local_date>\d*),' + \
             '(?P<local_time>\d*),' + \
@@ -30,7 +32,7 @@ class tk102(Adapter):
             '.*;'
 
         # e.g. imei:865328021048409,tracker,141210172556,0411959136,L,,,0BD4,,7A78,,,,,0,0,0.0%,,;
-        re_location_low = '^imei:(?P<imei>\d+),' + \
+        re_location_low = '^imei:(?P<imei>\d{15}),' + \
             'tracker,' + \
             '(?P<local_date>\d*),' + \
             '(?P<local_time>\d*),' + \
@@ -70,8 +72,9 @@ class tk102(Adapter):
             return resp
 
     @classmethod
-    def response_to(cls, data):
-        message = cls.decode(data)
+    def response_to(cls, message):
+        if type(message) in [str, unicode]:
+            message = cls.decode(data)
         if not message:
             return
         if config.MESSAGE_TYPE_INIT == message.message_type:
