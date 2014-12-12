@@ -5,33 +5,26 @@ import sys
 from models import GPSDevice
 
 def handle(sock, (clientip, clientport)):
-    print 'handle'
-    fp = sock.makefile()
+    print
+    print 'new connection from %s:%s' % (clientip, clientport)
 
     # Create the device to use for this connection
     # Using him, we'll send, receive, persist all stuff
     device = GPSDevice(ipaddr=clientip)
 
     while True:
-        data = fp.readline()
+        data = sock.recv(config.DEVICE_GATEWAY_RECV_SIZE)
+        print 'read %s' % data
         if not data:
             break
-        print 'read %s' % data
+        print 'recv from %s: %s' % (clientip, data)
         device.sent(data)
-        response = device.pop_response()
-        while response:
-            fp.write(response)
-            fp.flush()
-            response = device.pop_response()
-        fp.flush()
 
-    # receive data from a device
-    # at this point we'll just have IP, and data
-    # TODO - lookup by IP, some robustness / security on that
-    # TODO - throttling by IP
-    # parse message & do anything needed
-    # send messages back to device
-    pass
+        resp = device.pop_response()
+        while resp:
+            sock.send(resp)
+            print 'send to   %s: %s' % (clientip, resp)
+            resp = device.pop_response()
 
 if __name__ == '__main__':
     server = StreamServer((config.DEVICE_GATEWAY_HOST_LISTEN, config.DEVICE_GATEWAY_PORT_LISTEN), handle, spawn=config.DEVICE_GATEWAY_MAX_CONNECTIONS)
