@@ -5,6 +5,7 @@ from adapter.adapter import Adapter
 
 mongoengine.connect(config.MONGO_DBNAME, host=config.MONGO_HOST, port=config.MONGO_PORT)
 
+
 class Message(mongoengine.Document):
     message_type = mongoengine.StringField()
     state = mongoengine.StringField(default=config.MESSAGE_STATE_INITIAL)
@@ -26,9 +27,10 @@ class Message(mongoengine.Document):
     def __str__(self):
         return u'Message type: %s, IMEI: %s, state: %s' % (self.message_type, self.imei, self.state)
 
+
 class GPSDevice():
     """ Base class for single GPS device
-        Model for saving / retrieving to database
+        Later - Model for saving / retrieving to database
         Methods for encoding/decoding messages to/from device
     """
     def __init__(self, imei=None, ipaddr=None, protocol=None):
@@ -36,7 +38,6 @@ class GPSDevice():
         self.ipaddr = ipaddr
         self.adapter = None
         self.responses = []
-        # TODO - check for imei / ip and retrieve if possible
 
     def pop_response(self):
         """ Get the current response, taking into account data read, and messages waiting
@@ -52,19 +53,25 @@ class GPSDevice():
         if not self.adapter:
             raise Exception("Coudln't determine adapter from datastring: %s" % datastring)
 
-        # Set IMEI, if needed
-        message = self.adapter.decode(datastring)
-        if not self.imei:
-            self.imei = message.imei
+        # Possibly multiple messages in datastring, separated by delimiter
+        for messagestring in filter(lambda x:x, datastring.split(self.adapter.delimiter)):
+            # Set IMEI, if needed
+            message = self.adapter.decode(messagestring)
+            if not self.imei:
+                self.imei = message.imei
 
-        # Determine any stock responses for this type of adapter (e.g. LOAD, ON)
-        response = self.adapter.response_to(datastring)
-        if response:
-            self.responses.append(response)
+            # Determine any stock responses for this type of adapter (e.g. LOAD, ON)
+            response = self.adapter.response_to(message)
+            if response:
+                self.responses.append(response)
 
         # Get & send responses from queue
-        # TODO - hardcode
-        #message = Message(imei=self.imei, message_type=config.MESSAGE_TYPE_REQ_LOCATION)
-        #response = self.adapter.encode(message)
-        #self.responses.append(response)
+        self.retrieve_messages()
 
+    def retrieve_messages(self):
+        if not self.imei:
+            return
+        m = Message.dequeue_response(imei=self.imei)
+        while m:
+            self.responses.append(self.adapter.encode(m))
+            m = Message.dequeue_response(imei=self.imei)
