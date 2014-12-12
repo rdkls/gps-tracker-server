@@ -11,9 +11,9 @@ class Message(mongoengine.Document):
     state = mongoengine.StringField(default=config.MESSAGE_STATE_INITIAL)
     imei = mongoengine.StringField()
     message_datastring = mongoengine.StringField()
-    created = mongoengine.DateTimeField(default=datetime.datetime.utcnow())
-    latitude = mongoengine.StringField()
-    longitude = mongoengine.StringField()
+    created = mongoengine.DateTimeField(default=datetime.datetime.utcnow)
+    latitude = mongoengine.DecimalField()
+    longitude = mongoengine.DecimalField()
     
     @classmethod
     def dequeue_response(self, imei):
@@ -41,6 +41,14 @@ class GPSDevice():
         self.adapter = None
         self.responses = []
 
+    @property
+    def is_online(self):
+        if not self.imei:
+            return False
+        if Message.objects.filter(imei=self.imei, created__gte=datetime.datetime.utcnow() - datetime.timedelta(minutes=config.DEVICE_OFFLINE_TIMEOUT_MINUTES)):
+            return True
+        return False
+
     def pop_response(self):
         """ Get the current response, taking into account data read, and messages waiting
         """
@@ -64,6 +72,8 @@ class GPSDevice():
                 break
             if not self.imei:
                 self.imei = message.imei
+            message.state = config.MESSAGE_STATE_RECEIVED
+            message.save()
 
             # Determine any stock responses for this type of adapter (e.g. LOAD, ON)
             response = self.adapter.response_to(message)

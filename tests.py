@@ -75,3 +75,7 @@ def test_gpsdevice_tk102_response_hb():
 def test_gpsdevice_tk102_response_location():
     d = GPSDevice()
     d.sent(tk102_location_full_string)
+
+def test_device_online():
+    d = GPSDevice()
+    assert(False==d.is_online)
