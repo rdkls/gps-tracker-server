@@ -73,8 +73,7 @@ class GPSDevice():
             # If it's a location message, record this
             if config.MESSAGE_TYPE_LOCATION_FULL == message.message_type:
                 maps_url = config.GOOGLE_MAPS_URI_FORMAT.format(latitude=message.latitude, longitude=message.longitude)
-                print 'received location: '
-                print maps_url
+                print 'received location from %s: %s' % (self.imei, maps_url)
 
         # Get & send responses from queue
         self.retrieve_messages()
