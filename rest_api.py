@@ -37,15 +37,6 @@ class UserView(ResourceView):
     resource = UserResource
     methods = [methods.Create, methods.Update, methods.Fetch, methods.List]
 
-    def post(self, **kwargs):
-        if 'pk' in kwargs:
-            raise NotFound()
-        self._resource.validate_request()
-        obj = self._resource.create_object()
-        obj.set_password(obj.password)
-        ret = self._resource.serialize(obj, request.args)
-        return ret
-
 @api.register(name='devices', url='/devices/')
 class DeviceView(ResourceView):
     resource = DeviceResource
