@@ -131,25 +131,33 @@ class GPSDevice(mongoengine.Document):
     def __str__(self):
         return 'GPSDevice imei %s, ip %s' % (self.imei, self.ipaddr)
 
+
 class User(mongoengine.Document):
     email = mongoengine.EmailField(required=True, unique=True)
     password = mongoengine.StringField(required=True)
     devices = mongoengine.ListField(mongoengine.ReferenceField(GPSDevice))
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.password = self.hash_password(self.password)
+        super(User, self).save(*args, **kwargs)
+
     def check_password(self, password_to_check):
         (salt, password_salted_hashed) = self.password.split(':')
-        password_to_check_salted_hashed = hashlib.sha1(salt + password_to_check).hexdigest()
-        if password_salted_hashed == password_to_check_salted_hashed:
+        if self.password == self.hash_password(password=password_to_check, salt=salt):
             return True
         else:
             return False
 
     def set_password(self, password):
-        salt = hashlib.sha1(str(random.random())).hexdigest()[:8]
-        password_salted_hashed = hashlib.sha1(salt + password).hexdigest()
-        self.password = '%s:%s' % (salt, password_salted_hashed)
+        self.password = self.hash_password(password)
         self.save()
 
+    def hash_password(self, password, salt=None):
+        if not salt:
+            salt = hashlib.sha1(str(random.random())).hexdigest()[:8]
+        password_salted_hashed = hashlib.sha1(salt + password).hexdigest()
+        return '%s:%s' % (salt, password_salted_hashed)
 
     def __str__(self):
         return self.email
