@@ -1,6 +1,9 @@
 import config
 import datetime
 import mongoengine
+import hashlib
+import random
+
 from adapter.adapter import Adapter
 
 mongoengine.connect(config.MONGO_DBNAME, host=config.MONGO_HOST, port=config.MONGO_PORT)
@@ -129,7 +132,24 @@ class GPSDevice(mongoengine.Document):
         return 'GPSDevice imei %s, ip %s' % (self.imei, self.ipaddr)
 
 class User(mongoengine.Document):
-    email = mongoengine.EmailField(required=True)
-    password = mongoengine.StringField()
+    email = mongoengine.EmailField(required=True, unique=True)
+    password = mongoengine.StringField(required=True)
     devices = mongoengine.ListField(mongoengine.ReferenceField(GPSDevice))
 
+    def check_password(self, password_to_check):
+        (salt, password_salted_hashed) = self.password.split(':')
+        password_to_check_salted_hashed = hashlib.sha1(salt + password_to_check).hexdigest()
+        if password_salted_hashed == password_to_check_salted_hashed:
+            return True
+        else:
+            return False
+
+    def set_password(self, password):
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:8]
+        password_salted_hashed = hashlib.sha1(salt + password).hexdigest()
+        self.password = '%s:%s' % (salt, password_salted_hashed)
+        self.save()
+
+
+    def __str__(self):
+        return self.email
