@@ -16,6 +16,15 @@ tk102_datastrings = [
     tk102_init_string,
 ]
 
+# User
+def test_user():
+    User.objects.delete({'email':'test@test.com'})
+    u = User(email='test@test.com', password='test')
+    u.save()
+    assert(u.check_password('test'))
+    u = User.objects.get(email='test@test.com')
+    assert(u.check_password('test'))
+
 # GPSDevice
 def test_device_user():
     User.objects.delete({'email':'test@test.com'})
@@ -24,11 +33,11 @@ def test_device_user():
     d = GPSDevice(imei='test')
     d.save()
 
-    u = User(email='test@test.com')
+    u = User(email='test@test.com', password='test')
     u.devices.append(d)
     u.save()
     assert(u==d.user)
-    
+
 def test_unique_imei():
     GPSDevice.objects.delete({'imei':'test'})
     d = GPSDevice(imei='test')
