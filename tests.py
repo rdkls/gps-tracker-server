@@ -3,6 +3,7 @@ import sys
 import mongoengine
 from models import Message
 from models import GPSDevice
+from models import User
 
 tk102_heartbeat_string = u'865328021048409;'
 tk102_location_low_string = 'imei:865328021048409,tracker,141210172556,0411959136,L,,,0BD4,,7A78,,,,,0,0,0.0%,,;'
@@ -15,7 +16,19 @@ tk102_datastrings = [
     tk102_init_string,
 ]
 
-# GPSDevices
+# GPSDevice
+def test_device_user():
+    User.objects.delete({'email':'test@test.com'})
+    GPSDevice.objects.delete({'imei':'test'})
+
+    d = GPSDevice(imei='test')
+    d.save()
+
+    u = User(email='test@test.com')
+    u.devices.append(d)
+    u.save()
+    assert(u==d.user)
+    
 def test_unique_imei():
     GPSDevice.objects.delete({'imei':'test'})
     d = GPSDevice(imei='test')

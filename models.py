@@ -50,7 +50,7 @@ class GPSDevice(mongoengine.Document):
 
     @property
     def user(self):
-        pass
+        return User.objects.get(devices=self)
 
     @classmethod
     def get_by_data(cls, datastring, ipaddr=None):
