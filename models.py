@@ -30,16 +30,15 @@ class Message(mongoengine.Document):
         return u'Message type: %s, IMEI: %s, state: %s' % (self.message_type, self.imei, self.state)
 
 
-class GPSDevice():
-    """ Base class for single GPS device
-        Later - Model for saving / retrieving to database
-        Methods for encoding/decoding messages to/from device
-    """
-    def __init__(self, imei=None, ipaddr=None, protocol=None):
-        self.imei = imei
-        self.ipaddr = ipaddr
-        self.adapter = None
-        self.responses = []
+class GPSDevice(mongoengine.Document):
+    imei = mongoengine.StringField()
+    ipaddr = mongoengine.StringField()
+
+    # list of responses (data strings, encoded for device) to be sent to device
+    responses = mongoengine.ListField(mongoengine.StringField())
+
+    # the adapter for encode/decode messages to/from device
+    adapter = None
 
     @property
     def is_online(self):
@@ -48,6 +47,37 @@ class GPSDevice():
         if Message.objects.filter(imei=self.imei, created__gte=datetime.datetime.utcnow() - datetime.timedelta(minutes=config.DEVICE_OFFLINE_TIMEOUT_MINUTES)):
             return True
         return False
+
+    @property
+    def user(self):
+        pass
+
+    @classmethod
+    def get_by_data(cls, datastring, ipaddr=None):
+        adapter = Adapter.detect(datastring)
+        if not adapter:
+            raise Exception("Couldn't determine adapter from datastring: %s" % datastring)
+
+        message = adapter.decode(datastring)
+
+        if not message.imei:
+            raise Exception("Couldn't get imei from datastring: %s" % datastring)
+
+        """ Try retrieving device from db
+            If none already, create a new one and return it
+        """
+        try:
+            device = GPSDevice.objects.get(imei=message.imei)
+        except mongoengine.DoesNotExist:
+            device = GPSDevice(imei=message.imei, ipaddr=ipaddr)
+            device.save()
+        except mongoengine.MultipleObjectsReturned:
+            raise mongoengine.MultipleObjectsReturned('Found more than one device with imei %s' % message.imei)
+        if ipaddr and ipaddr != device.ipaddr:
+            device.ipaddr = ipaddr
+            device.save()
+        return device
+        
 
     def pop_response(self):
         """ Get the current response, taking into account data read, and messages waiting
@@ -67,7 +97,6 @@ class GPSDevice():
         for messagestring in filter(lambda x:x, datastring.split(self.adapter.delimiter)):
             # Set IMEI, if needed
             message = self.adapter.decode(messagestring)
-            #print message
             if not message:
                 break
             if not self.imei:
@@ -95,3 +124,12 @@ class GPSDevice():
         while m:
             self.responses.append(self.adapter.encode(m))
             m = Message.dequeue_response(imei=self.imei)
+
+    def __str__(self):
+        return 'GPSDevice imei %s, ip %s' % (self.imei, self.ipaddr)
+
+class User(mongoengine.Document):
+    email = mongoengine.EmailField(required=True)
+    password = mongoengine.StringField()
+    devices = mongoengine.ListField(mongoengine.ReferenceField(GPSDevice))
+
