@@ -8,15 +8,14 @@ def handle(sock, (clientip, clientport)):
     print
     print 'new connection from %s:%s' % (clientip, clientport)
 
-    # Create the device to use for this connection
-    # Using him, we'll send, receive, persist all stuff
-    device = GPSDevice(ipaddr=clientip)
-
+    device = None
     while True:
         data = sock.recv(config.DEVICE_GATEWAY_RECV_SIZE)
         if not data:
             break
         print '%s > %s' % (clientip, data)
+        if not device:
+            device = GPSDevice.get_by_data(data, ipaddr=clientip)
         device.sent(data)
 
         resp = device.pop_response()
