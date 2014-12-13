@@ -31,7 +31,7 @@ class Message(mongoengine.Document):
 
 
 class GPSDevice(mongoengine.Document):
-    imei = mongoengine.StringField()
+    imei = mongoengine.StringField(unique=True)
     ipaddr = mongoengine.StringField()
 
     # list of responses (data strings, encoded for device) to be sent to device

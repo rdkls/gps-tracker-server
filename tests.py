@@ -1,5 +1,6 @@
 import config
 import sys
+import mongoengine
 from models import Message
 from models import GPSDevice
 
@@ -15,6 +16,18 @@ tk102_datastrings = [
 ]
 
 # GPSDevices
+def test_unique_imei():
+    GPSDevice.objects.delete({'imei':'test'})
+    d = GPSDevice(imei='test')
+    d.save()
+    e = None
+    try:
+        d = GPSDevice(imei='test')
+        d.save()
+    except mongoengine.NotUniqueError, e:
+        pass
+    assert(mongoengine.NotUniqueError == type(e))
+
 def test_device_get_by_data_bad():
     e = None
     try:
