@@ -37,3 +37,12 @@ def test_detect():
     assert(tk102 == Adapter.detect(tk102_heartbeat_string))
     assert(tk102 == Adapter.detect(tk102_location_full_string))
     assert(tk102 == Adapter.detect(tk102_location_low_string))
+
+def test_detect_bad():
+    from .adapter import Adapter
+    e = None
+    try:
+        Adapter.detect(['bad'])
+    except Exception, e:
+        pass
+    assert(TypeError==type(e))
