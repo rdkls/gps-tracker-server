@@ -3,6 +3,7 @@ import bcrypt
 import datetime
 import mongoengine
 import random
+import hashlib
 
 from adapter.adapter import Adapter
 
@@ -135,11 +136,21 @@ class GPSDevice(mongoengine.Document):
 class User(mongoengine.Document):
     email = mongoengine.EmailField(required=True, unique=True)
     password = mongoengine.StringField(required=True)
+    api_token = mongoengine.StringField()
     devices = mongoengine.ListField(mongoengine.ReferenceField(GPSDevice))
+
+    @classmethod
+    def check_api_token(self, api_token):
+        try:
+            return User.objects.get(api_token=api_token)
+        except User.DoesNotExist:
+            return None
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.password = bcrypt.hashpw(self.password, salt=bcrypt.gensalt())
+        if not self.api_token:
+            self.api_token = hashlib.sha1(str(random.random())).hexdigest()
         super(User, self).save(*args, **kwargs)
 
     def check_password(self, password_to_check):

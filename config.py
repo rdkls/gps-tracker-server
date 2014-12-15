@@ -30,3 +30,4 @@ EVE_SETTINGS = {
     'MONGO_DBNAME'      : MONGO_DBNAME,
     'DOMAIN'            : {'eve-mongoengine': {}} # sadly this is needed for eve
 }
+EVE_AUTH_HEADER_NAME            = 'X-API-KEY'
