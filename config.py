@@ -24,3 +24,9 @@ MESSAGE_STATE_RECEIVED          = 'received'
 
 GOOGLE_MAPS_URI_FORMAT          = 'https://maps.google.com.au/?q={latitude},{longitude}'
 
+EVE_SETTINGS = {
+    'MONGO_HOST'        : MONGO_HOST,
+    'MONGO_PORT'        : MONGO_PORT,
+    'MONGO_DBNAME'      : MONGO_DBNAME,
+    'DOMAIN'            : {'eve-mongoengine': {}} # sadly this is needed for eve
+}
