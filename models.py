@@ -1,7 +1,7 @@
 import config
+import bcrypt
 import datetime
 import mongoengine
-import hashlib
 import random
 
 from adapter.adapter import Adapter
@@ -139,25 +139,15 @@ class User(mongoengine.Document):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.password = self.hash_password(self.password)
+            self.password = bcrypt.hashpw(self.password, salt=bcrypt.gensalt())
         super(User, self).save(*args, **kwargs)
 
     def check_password(self, password_to_check):
-        (salt, password_salted_hashed) = self.password.split(':')
-        if self.password == self.hash_password(password=password_to_check, salt=salt):
-            return True
-        else:
-            return False
+        return bcrypt.checkpw(hashed_password=self.password, password=password_to_check)
 
     def set_password(self, password):
-        self.password = self.hash_password(password)
+        self.password = bcrypt.hashpw(password, salt=bcrypt.gensalt())
         self.save()
-
-    def hash_password(self, password, salt=None):
-        if not salt:
-            salt = hashlib.sha1(str(random.random())).hexdigest()[:8]
-        password_salted_hashed = hashlib.sha1(salt + password).hexdigest()
-        return '%s:%s' % (salt, password_salted_hashed)
 
     def __str__(self):
         return self.email
