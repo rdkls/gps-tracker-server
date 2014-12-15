@@ -15,7 +15,6 @@ class Message(mongoengine.Document):
     state = mongoengine.StringField(default=config.MESSAGE_STATE_INITIAL)
     imei = mongoengine.StringField()
     message_datastring = mongoengine.StringField()
-    created = mongoengine.DateTimeField(default=datetime.datetime.utcnow)
     latitude = mongoengine.DecimalField()
     longitude = mongoengine.DecimalField()
     
@@ -24,7 +23,7 @@ class Message(mongoengine.Document):
         collection = mongoengine.connection.get_db()['message']
         resp = collection.find_and_modify(
             query = {'imei': imei, 'state': config.MESSAGE_STATE_INITIAL},
-            sort = {'created': 1},
+            sort = {'_created': 1},
             update = {'$set': {'state': config.MESSAGE_STATE_SENT}},
         )
         if resp:
@@ -48,7 +47,7 @@ class GPSDevice(mongoengine.Document):
     def is_online(self):
         if not self.imei:
             return False
-        if Message.objects.filter(imei=self.imei, created__gte=datetime.datetime.utcnow() - datetime.timedelta(minutes=config.DEVICE_OFFLINE_TIMEOUT_MINUTES)):
+        if Message.objects.filter(imei=self.imei, _created__gte=datetime.datetime.utcnow() - datetime.timedelta(minutes=config.DEVICE_OFFLINE_TIMEOUT_MINUTES)):
             return True
         return False
 
