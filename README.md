@@ -1,7 +1,15 @@
 # GPS Tracker Server #
-A basic python server for managing GPS Tracker Devices.
+A basic system for managing GPS Tracker Devices.
 
 Currently only looking at Coban TK102, since that's what I have.
+
+There are 2 parts
+- device_gateway, which GPS devices talk to
+- rest api, for web & mobile access
+
+Currently the device gateway handles initialization, heartbeat, and location request/response
+
+The REST API is a quick throwup using EVE and its mongoengine extension
 
 ## System Requirements ##
 * python
