@@ -19,5 +19,7 @@ if __name__=='__main__':
     app = Eve(auth=ApiTokenAuth, settings=config.EVE_SETTINGS)
     ext = EveMongoengine(app)
     ext.add_model(User)
+    ext.add_model(Message)
+    ext.add_model(GPSDevice)
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
