@@ -17,13 +17,14 @@ class Message(mongoengine.Document):
     message_datastring = mongoengine.StringField()
     latitude = mongoengine.DecimalField()
     longitude = mongoengine.DecimalField()
+    created = mongoengine.DateTimeField(default=datetime.datetime.utcnow)
     
     @classmethod
     def dequeue_response(self, imei):
         collection = mongoengine.connection.get_db()['message']
         resp = collection.find_and_modify(
             query = {'imei': imei, 'state': config.MESSAGE_STATE_INITIAL},
-            sort = {'_created': 1},
+            sort = {'created': 1},
             update = {'$set': {'state': config.MESSAGE_STATE_SENT}},
         )
         if resp:
@@ -42,12 +43,14 @@ class GPSDevice(mongoengine.Document):
 
     # the adapter for encode/decode messages to/from device
     adapter = None
+    latitude = mongoengine.DecimalField()
+    longitude = mongoengine.DecimalField()
 
     @property
     def is_online(self):
         if not self.imei:
             return False
-        if Message.objects.filter(imei=self.imei, _created__gte=datetime.datetime.utcnow() - datetime.timedelta(minutes=config.DEVICE_OFFLINE_TIMEOUT_MINUTES)):
+        if Message.objects.filter(imei=self.imei, created__gte=datetime.datetime.utcnow() - datetime.timedelta(minutes=config.DEVICE_OFFLINE_TIMEOUT_MINUTES)):
             return True
         return False
 
@@ -114,6 +117,9 @@ class GPSDevice(mongoengine.Document):
 
             # If it's a location message, record this
             if config.MESSAGE_TYPE_LOCATION_FULL == message.message_type:
+                self.latitude = message.latitude
+                self.longitude = message.longitude
+                self.save()
                 maps_url = config.GOOGLE_MAPS_URI_FORMAT.format(latitude=message.latitude, longitude=message.longitude)
                 print 'received location from %s: %s' % (self.imei, maps_url)
 
@@ -135,29 +141,30 @@ class GPSDevice(mongoengine.Document):
 class User(mongoengine.Document):
     email = mongoengine.EmailField(required=True, unique=True)
     password = mongoengine.StringField(required=True)
-    api_token = mongoengine.StringField()
+    api_key = mongoengine.StringField()
     devices = mongoengine.ListField(mongoengine.ReferenceField(GPSDevice))
 
     @classmethod
-    def check_api_token(self, api_token):
+    def check_api_key(self, api_key):
         try:
-            return User.objects.get(api_token=api_token)
+            return User.objects.get(api_key=api_key)
         except User.DoesNotExist:
             return None
 
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.id and self.password:
             self.password = bcrypt.hashpw(self.password, salt=bcrypt.gensalt())
-        if not self.api_token:
-            self.api_token = hashlib.sha1(str(random.random())).hexdigest()
+        if not self.api_key:
+            self.api_key = hashlib.sha1(str(random.random())).hexdigest()
         super(User, self).save(*args, **kwargs)
 
     def check_password(self, password_to_check):
         return bcrypt.checkpw(hashed_password=self.password, password=password_to_check)
 
     def set_password(self, password):
+        if not self.id:
+            raise Exception('user.set_password() can only be called after user has been saved')
         self.password = bcrypt.hashpw(password, salt=bcrypt.gensalt())
-        self.save()
 
     def __str__(self):
         return self.email
