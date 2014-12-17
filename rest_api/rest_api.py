@@ -10,6 +10,7 @@ from models import *
 
 app = Flask(__name__)
 app.debug = True
+app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app)
 
 
