@@ -23,9 +23,12 @@ html(lang='en')
         script(src='scripts/app.js')
         script(src='scripts/config.js')
         script(src='scripts/controllers/main.js')
+        script(src='scripts/controllers/dash.js')
         script(src='scripts/services/api.js')
+        script(src='scripts/services/user.js')
 
     body(ng-app='app')
+        div(ng-if='user') Welcome, {{ user.email }}. Your api key is {{ user.api_key }}
         h1| GPS Tracker
 
         div(ng-view='')

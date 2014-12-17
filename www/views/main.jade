@@ -1,8 +1,25 @@
-form(ng-submit='login()')
-    input(type='text' ng-model='email' placeholder='email')
-    input(type='password' ng-model='password' placeholder='password')
+h2 Welcome
+
+h4 Register
+form(ng-submit='register()')
+    input(type='text' ng-model='imei' placeholder='imei')
+    input(type='text' ng-model='email' placeholder='email' ng-required='true')
+    input(type='password' ng-model='password' placeholder='password' ng-required='true')
     input(type='submit')
 
-    br
-    br
-    | api key: {{ api_key }}
+h4 Login
+form(ng-submit='login()')
+    input(type='text' ng-model='email' placeholder='email' ng-required='true')
+    input(type='password' ng-model='password' placeholder='password' ng-required='true')
+    input(type='submit')
+
+br
+br
+| api key: {{ api_key }}
+br
+br
+{{ user }}
+br
+
+div(ng-repeat="user in users")
+| {{ user }}

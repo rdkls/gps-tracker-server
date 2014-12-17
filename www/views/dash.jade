@@ -1,0 +1,12 @@
+h2 Dashboard
+
+h3 Devices
+    div(ng-if='!devices') (no devices registered yet)
+    div(ng-repeat='device in devices')
+        imei: {{ device.imei }}
+        button(class='btn btn-danger' ng-click='removeDevice(device.id)') X
+
+    form(ng-show='showAddDevice' ng-submit='addDevice()')
+        input(type='text' ng-model='newImei' placeholder='add imei')
+        input(type='submit')
+

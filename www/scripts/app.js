@@ -11,6 +11,10 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/dash', {
+        templateUrl: 'views/dash.html',
+        controller: 'DashCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

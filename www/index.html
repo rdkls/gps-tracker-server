@@ -22,9 +22,12 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/config.js"></script>
     <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/dash.js"></script>
     <script src="scripts/services/api.js"></script>
+    <script src="scripts/services/user.js"></script>
   </head>
   <body ng-app="app">
+    <div ng-if="user">Welcome, {{ user.email }}. Your api key is {{ user.api_key }}</div>
     <h1>GPS Tracker</h1>
     <div ng-view=""></div>
   </body>
