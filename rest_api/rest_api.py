@@ -2,6 +2,7 @@
 import json
 import config
 import sys
+import re
 from flask_cors import CORS
 from gevent.pywsgi import WSGIServer
 from flask import Flask, request
@@ -10,7 +11,7 @@ from models import *
 
 app = Flask(__name__)
 app.debug = True
-app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_HEADERS'] = ['Content-Type', 'X-API-KEY']
 cors = CORS(app)
 
 
@@ -37,9 +38,35 @@ def login():
     except (User.DoesNotExist, User.MultipleObjectsReturned):
         raise Unauthorized()
     if u.check_password(password):
-        return json.dumps({'api_key': u.api_key})
+        return json.dumps({
+            'api_key'   : u.api_key,
+            'email'     : u.email,
+            'id'        : str(u.id),
+        })
     raise Unauthorized()
 
+@app.route('/user/register', methods=['POST'])
+def user_register():
+    try:
+        d = json.loads(request.data)
+        email = d['email']
+        password = d['password']
+    except:
+        raise BadRequest()
+    if not email or not password:
+        raise BadRequest('Please supply both email and password')
+    u = User(email=email, password=password)
+    try:
+        u.save()
+    except mongoengine.NotUniqueError:
+        raise BadRequest('User with that email already exists')
+    except mongoengine.ValidationError:
+        raise BadRequest('Bad email')
+    return json.dumps({
+        'api_key'   : u.api_key,
+        'email'     : u.email,
+        'id'        : str(u.id),
+    })
 
 @app.route('/user/<user_id>', methods=['GET'])
 @app.route('/user', methods=['GET'])
@@ -65,6 +92,48 @@ def user_list(user_id=None):
             })
     return json.dumps(resp)
 
+@app.route('/device/<id>', methods=['DELETE'])
+def delete_device(id):
+    print 'x'
+    user = check_auth()
+    print user
+    try:
+        device = GPSDevice.objects.get(id=id)
+        print device
+    except GPSDevice.DoesNotExist:
+        raise NotFound()
+    if user != device.user:
+        raise NotFound()
+    user.devices = filter(lambda x:x.id!=id, user.devices)
+    user.save()
+    device.delete()
+    return 'ok'
+
+@app.route('/device', methods=['POST'])
+def add_device():
+    user = check_auth()
+    try:
+        data = json.loads(request.data)
+    except:
+        raise BadRequest()
+    if not data.get('imei', None):
+        raise BadRequest('imei required')
+    if not re.match('^\d{15}$', data['imei']):
+        raise BadRequest('imei must be 15 digits long')
+    try:
+        device = GPSDevice.objects.get(imei=data['imei'])
+        if device.user != user:
+            raise BadRequest('There was a problem adding that device')
+    except GPSDevice.DoesNotExist:
+        device = GPSDevice(imei=data['imei'])
+        device.save()
+        user.devices.append(device)
+        user.save()
+    resp = {
+        'id'    : str(device.id),
+        'imei'  : device.imei,
+    }
+    return json.dumps(resp)
 
 @app.route('/device/<device_id>', methods=['GET'])
 @app.route('/device', methods=['GET'])
@@ -85,14 +154,14 @@ def devices(device_id=None):
             raise NotFound()
     else:
         resp = []
-        for d in user.devices:
+        for device in user.devices:
             d = {
-                'id'            : str(d.id),
-                'imei'          : d.imei,
-                'ipaddr'        : d.ipaddr,
-                'is_online'     : d.is_online,
-                'latitude'      : d.latitude,
-                'longitude'     : d.longitude,
+                'id'            : str(device.id),
+                'imei'          : device.imei,
+                'ipaddr'        : device.ipaddr,
+                'is_online'     : device.is_online,
+                'latitude'      : device.latitude,
+                'longitude'     : device.longitude,
             }
             resp.append(d)
     return json.dumps(resp)
