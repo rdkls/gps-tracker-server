@@ -2,6 +2,7 @@
 import json
 import config
 import sys
+from flask_cors import CORS
 from gevent.pywsgi import WSGIServer
 from flask import Flask, request
 from werkzeug.exceptions import NotFound, Unauthorized, BadRequest
@@ -9,6 +10,7 @@ from models import *
 
 app = Flask(__name__)
 app.debug = True
+cors = CORS(app)
 
 
 def check_auth():
@@ -21,7 +23,7 @@ def check_auth():
     return u
 
 
-@app.route('/login/', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     try:
         d = json.loads(request.data)
@@ -39,7 +41,7 @@ def login():
 
 
 @app.route('/user/<user_id>', methods=['GET'])
-@app.route('/user/', methods=['GET'])
+@app.route('/user', methods=['GET'])
 def user_list(user_id=None):
     user = check_auth()
     if user_id:
@@ -64,7 +66,7 @@ def user_list(user_id=None):
 
 
 @app.route('/device/<device_id>', methods=['GET'])
-@app.route('/device/', methods=['GET'])
+@app.route('/device', methods=['GET'])
 def devices(device_id=None):
     user = check_auth()
     if device_id:

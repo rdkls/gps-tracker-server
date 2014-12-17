@@ -1,6 +1,4 @@
 Cerberus==0.7.2
-Eve==0.4
-Eve-Mongoengine==0.0.9
 Events==0.2.1
 Flask==0.10.1
 Flask-PyMongo==0.3.0
@@ -33,3 +31,4 @@ python-mimeparse==0.1.4
 simplejson==3.5.2
 six==1.8.0
 wsgiref==0.1.2
+Flask-Cors==1.10.1
