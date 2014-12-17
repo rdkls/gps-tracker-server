@@ -56,7 +56,10 @@ class GPSDevice(mongoengine.Document):
 
     @property
     def user(self):
-        return User.objects.get(devices=self)
+        try:
+            return User.objects.get(devices=self)
+        except User.DoesNotExist:
+            return None
 
     @classmethod
     def get_by_data(cls, datastring, ipaddr=None):
@@ -133,6 +136,10 @@ class GPSDevice(mongoengine.Document):
         while m:
             self.responses.append(self.adapter.encode(m))
             m = Message.dequeue_response(imei=self.imei)
+
+    def delete(self):
+        User.objects.update(pull__devices=self.id)
+        super(GPSDevice, self).delete()
 
     def __str__(self):
         return 'GPSDevice imei %s, ip %s' % (self.imei, self.ipaddr)
