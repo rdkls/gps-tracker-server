@@ -1,0 +1,21 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "gulp": "^3.8.10",
+    "gulp-jade": "^0.10.0",
+    "gulp-sass": "^1.2.4",
+    "jshint-stylish": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
