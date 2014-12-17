@@ -94,12 +94,9 @@ def user_list(user_id=None):
 
 @app.route('/device/<id>', methods=['DELETE'])
 def delete_device(id):
-    print 'x'
     user = check_auth()
-    print user
     try:
         device = GPSDevice.objects.get(id=id)
-        print device
     except GPSDevice.DoesNotExist:
         raise NotFound()
     if user != device.user:
