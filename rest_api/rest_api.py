@@ -122,6 +122,10 @@ def add_device():
         if device.user != user:
             raise BadRequest('There was a problem adding that device')
     except GPSDevice.DoesNotExist:
+        data = {
+            'imei'          : data.get('imei'),
+            'vehicle_plate' : data.get('vehicle_plate', None),
+        }
         device = GPSDevice(imei=data['imei'])
         device.save()
         user.devices.append(device)
@@ -143,6 +147,7 @@ def devices(device_id=None):
                 'id'            : str(d.id),
                 'imei'          : d.imei,
                 'ipaddr'        : d.ipaddr,
+                'vehicle_plate' : d.vehicle_plate,
                 'is_online'     : d.is_online,
                 'latitude'      : d.latitude,
                 'longitude'     : d.longitude,
