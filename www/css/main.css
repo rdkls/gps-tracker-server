@@ -4889,6 +4889,15 @@ button.close {
     display: none !important; }
  }
 
+nav.navbar {
+  margin-bottom: 0; }
+
+a.dropdown-toggle span {
+  margin-right: 5px; }
+
+#side-menu li span {
+  margin-left: 5px; }
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -4896,10 +4905,6 @@ button.close {
   padding: 0.2em 0; }
 
 /* Space out content a bit */
-body {
-  padding-top: 20px;
-  padding-bottom: 20px; }
-
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header, .marketing, .footer {
   padding-left: 15px;

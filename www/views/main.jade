@@ -1,25 +1,22 @@
-h2 Welcome
+.container
+    .row
+        .col-md-8.col-md-offset-2
+            .login-panel.panel.panel-default
+                .panel-heading
+                    h3.panel-title Welcome to GPS Track-O-Rama Thing
 
-h4 Register
-form(ng-submit='register()')
-    input(type='text' ng-model='imei' placeholder='imei')
-    input(type='text' ng-model='email' placeholder='email' ng-required='true')
-    input(type='password' ng-model='password' placeholder='password' ng-required='true')
-    input(type='submit')
+                .panel-body
+                    form#login(ng-submit='login()' ng-if='!showRegister')
+                        fieldset
+                            div.form-group: input.form-control(type='text' ng-model='login_user.email' placeholder='email' ng-required='true')
+                            div.form-group: input.form-control(type='password' ng-model='login_user.password' placeholder='password' ng-required='true')
+                            div.form-group: input.btn.btn-lg.btn-success.btn-block(type='submit' value='login')
+                            div.text-center
+                                a(ng-click='clickRegister()') Register
 
-h4 Login
-form(ng-submit='login()')
-    input(type='text' ng-model='email' placeholder='email' ng-required='true')
-    input(type='password' ng-model='password' placeholder='password' ng-required='true')
-    input(type='submit')
+                    form#register(ng-submit='register()' ng-if='showRegister' name='registerForm')
+                        fieldset
+                            div.form-group: input.form-control(type='text' ng-model='register_user.email' placeholder='email' ng-required='true')
+                            div.form-group: input.form-control(type='password' ng-model='register_user.password' placeholder='password' ng-required='true')
+                            div.form-group: input.btn.btn-lg.btn-success.btn-block(type='submit' value='register')
 
-br
-br
-| api key: {{ api_key }}
-br
-br
-{{ user }}
-br
-
-div(ng-repeat="user in users")
-| {{ user }}

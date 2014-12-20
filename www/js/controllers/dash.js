@@ -7,9 +7,11 @@ angular.module('app').controller('DashCtrl', function (
     Api) {
 
     $scope.init = function() {
-        $rootScope.user = JSON.parse(localStorage.getItem('user'));
         $scope.devices = Api.device.list();
         $scope.showAddDevice = true;
+    };
+    $scope.viewDevice = function(imei) {
+        console.log('viewDevice ' + imei);
     };
     $scope.addDevice = function() {
         Api.device.post(

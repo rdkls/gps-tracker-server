@@ -5,9 +5,9 @@ var gulp = require('gulp'),
 gulp.task('default', ['jade', 'jade_index', 'sass']);
 
 gulp.task('sass', function(){
-  return gulp.src('styles/main.scss')
+  return gulp.src('css/main.scss')
     .pipe(sass({ style: 'compressed' }))
-    .pipe(gulp.dest('styles'));
+    .pipe(gulp.dest('css'));
 });
 
 gulp.task('jade_index', function(){
@@ -23,7 +23,7 @@ gulp.task('jade', function(){
 });
 
 gulp.task('watch', ['jade', 'jade_index', 'sass'], function(){
-  gulp.watch('styles/*.scss', ['sass']);
+  gulp.watch('css/*.scss', ['sass']);
   gulp.watch('views/*.jade', ['jade']);
   gulp.watch('*.jade', ['jade_index']);
 });

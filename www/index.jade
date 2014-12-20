@@ -1,7 +1,14 @@
 html(lang='en')
     head
         title GPS Tracker
-        link(rel='stylesheet' href='styles/main.css')
+        link(rel='stylesheet' href='css/main.css')
+        link(rel='stylesheet' href='css/vendor/bootstrap/bootstrap.min.css')
+        link(rel='stylesheet' href='css/vendor/plugins/metisMenu/metisMenu.min.css')
+        link(rel='stylesheet' href='css/vendor/sb-admin-2.css')
+        link(rel='stylesheet' href='css/vendor/font-awesome/css/font-awesome.min.css')
+
+    body(ng-app='app' ng-controller='AppCtrl')
+        div(ng-view='')
 
         script(src="bower_components/jquery/dist/jquery.js")
         script(src="bower_components/angular/angular.js")
@@ -20,16 +27,16 @@ html(lang='en')
         script(src="bower_components/angular-resource/angular-resource.js")
         script(src="bower_components/angular-route/angular-route.js")
 
-        script(src='scripts/app.js')
-        script(src='scripts/config.js')
-        script(src='scripts/controllers/main.js')
-        script(src='scripts/controllers/dash.js')
-        script(src='scripts/services/api.js')
-        script(src='scripts/services/user.js')
+        script(src='js/app.js')
+        script(src='js/config.js')
+        script(src='js/controllers/app-ctrl.js')
+        script(src='js/controllers/main.js')
+        script(src='js/controllers/dash.js')
+        script(src='js/services/api.js')
+        script(src='js/services/user.js')
 
-    body(ng-app='app')
-        div(ng-if='user') Welcome, {{ user.email }}. Your api key is {{ user.api_key }}
-        h1| GPS Tracker
-
-        div(ng-view='')
+        <!-- sbadmin -->
+        script(src='js/vendor/jquery.js')
+        script(src='js/vendor/sbadmin/plugins/metisMenu/metisMenu.js')
+        script(src='js/vendor/sbadmin/sb-admin-2.js')
 

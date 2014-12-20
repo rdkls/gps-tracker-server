@@ -1,13 +1,44 @@
 
-<h2>Dashboard</h2>
-<h3>Devices
-  <div ng-if="!devices">(no devices registered yet)</div>
-  <div ng-repeat="device in devices">
-    <imei>{{ device.imei }}</imei>
-    <button ng-click="removeDevice(device.id)" class="btn btn-danger">X</button>
+<div id="wrapper">
+  <nav role="navigation" class="navbar navbar-default navbar-static-top">
+    <div class="navbar-header"><a class="navbar-brand">GPS Track-O-Rama</a></div>
+    <ul class="nav navbar-top-links navbar-right">
+      <li ng-if="user" class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-user fa-fw"></i><span>{{ user.email }}</span><i class="fa fa-caret-down"></i></a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a href="#"><i class="fa fa-user fa-fw">User Profile</i></a></li>
+          <!-- li: a(href='#'): i.fa.fa-gear.fa-fw Settings-->
+          <li><a ng-click="logout()"><i class="fa fa-sign-out fa-fw">Logout</i></a></li>
+        </ul>
+      </li>
+    </ul>
+    <div role="navigation" class="navbar-default sidebar">
+      <div class="sidebar-nav nabar-collapse">
+        <ul id="side-menu" class="nav">
+          <!--li.sidebar-search-->
+          <!--    div.input-group.custom-search-form-->
+          <!--        input.form-control(type='text' placeholder='Filter')-->
+          <li ng-repeat="device in devices" ng-click="viewDevice(device.imei)"><a><i class="fa fa-car"></i><span>{{ device.imei }}</span></a>
+            <!-- button(class='btn btn-danger' ng-click='removeDevice(device.id)') X-->
+          </li>
+          <li class="sidebar-search">
+            <div class="input-group custom-search-form">
+              <form ng-show="showAddDevice" ng-submit="addDevice()">
+                <input type="text" ng-model="newImei" placeholder="Add IMEI" class="form-control"/>
+                <input type="submit" value="+" style="display:none"/>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div id="page-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="page-header">Map Map Map MapMap Map MapMap Map MapMap Map MapMap Map Map</h1>
+        </div>
+      </div>
+    </div>
   </div>
-  <form ng-show="showAddDevice" ng-submit="addDevice()">
-    <input type="text" ng-model="newImei" placeholder="add imei"/>
-    <input type="submit"/>
-  </form>
-</h3>
+</div>

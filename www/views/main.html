@@ -1,16 +1,41 @@
 
-<h2>Welcome</h2>
-<h4>Register</h4>
-<form ng-submit="register()">
-  <input type="text" ng-model="imei" placeholder="imei"/>
-  <input type="text" ng-model="email" placeholder="email" ng-required="true"/>
-  <input type="password" ng-model="password" placeholder="password" ng-required="true"/>
-  <input type="submit"/>
-</form>
-<h4>Login</h4>
-<form ng-submit="login()">
-  <input type="text" ng-model="email" placeholder="email" ng-required="true"/>
-  <input type="password" ng-model="password" placeholder="password" ng-required="true"/>
-  <input type="submit"/>
-</form><br/><br/>api key: {{ api_key }}<br/><br/>{{ user }}<br/>
-<div ng-repeat="user in users"></div>{{ user }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Welcome to GPS Track-O-Rama Thing</h3>
+        </div>
+        <div class="panel-body">
+          <form id="login" ng-submit="login()" ng-if="!showRegister">
+            <fieldset>
+              <div class="form-group">
+                <input type="text" ng-model="login_user.email" placeholder="email" ng-required="true" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <input type="password" ng-model="login_user.password" placeholder="password" ng-required="true" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="login" class="btn btn-lg btn-success btn-block"/>
+              </div>
+              <div class="text-center"><a ng-click="clickRegister()">Register</a></div>
+            </fieldset>
+          </form>
+          <form id="register" ng-submit="register()" ng-if="showRegister" name="registerForm">
+            <fieldset>
+              <div class="form-group">
+                <input type="text" ng-model="register_user.email" placeholder="email" ng-required="true" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <input type="password" ng-model="register_user.password" placeholder="password" ng-required="true" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="register" class="btn btn-lg btn-success btn-block"/>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

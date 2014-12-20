@@ -1,12 +1,41 @@
-h2 Dashboard
 
-h3 Devices
-    div(ng-if='!devices') (no devices registered yet)
-    div(ng-repeat='device in devices')
-        imei: {{ device.imei }}
-        button(class='btn btn-danger' ng-click='removeDevice(device.id)') X
+div#wrapper
+    nav.navbar.navbar-default.navbar-static-top(role='navigation')
+        div.navbar-header
+            a.navbar-brand GPS Track-O-Rama
 
-    form(ng-show='showAddDevice' ng-submit='addDevice()')
-        input(type='text' ng-model='newImei' placeholder='add imei')
-        input(type='submit')
+        ul.nav.navbar-top-links.navbar-right
+            li.dropdown(ng-if='user')
+                a.dropdown-toggle(data-toggle='dropdown')
+                    i.fa.fa-user.fa-fw
+                    span {{ user.email }}
+                    i.fa.fa-caret-down
+                ul.dropdown-menu.dropdown-user
+                    li: a(href='#'): i.fa.fa-user.fa-fw User Profile
+                    // li: a(href='#'): i.fa.fa-gear.fa-fw Settings
+                    li: a(ng-click='logout()'): i.fa.fa-sign-out.fa-fw Logout
 
+        div.navbar-default.sidebar(role='navigation')
+            div.sidebar-nav.nabar-collapse
+                ul.nav#side-menu
+                    //li.sidebar-search
+                    //    div.input-group.custom-search-form
+                    //        input.form-control(type='text' placeholder='Filter')
+
+                    li(ng-repeat='device in devices' ng-click='viewDevice(device.imei)')
+                        a
+                            i.fa.fa-car
+                            span {{ device.imei }}
+                        // button(class='btn btn-danger' ng-click='removeDevice(device.id)') X
+
+                    li.sidebar-search
+                        div.input-group.custom-search-form
+                            form(ng-show='showAddDevice' ng-submit='addDevice()')
+                                input.form-control(type='text' ng-model='newImei' placeholder='Add IMEI')
+                                input(type='submit' value='+' style='display:none')
+
+    div#page-wrapper
+        div.container-fluid
+            div.row
+                div.col-lg-12
+                    h1.page-header Map Map Map MapMap Map MapMap Map MapMap Map MapMap Map Map

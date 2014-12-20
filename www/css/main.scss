@@ -1,6 +1,17 @@
 @import "bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 
 
+nav.navbar {
+    margin-bottom   : 0;
+}
+a.dropdown-toggle span {
+    margin-right    : 5px;
+}
+#side-menu li span {
+    margin-left     : 5px;
+}
+
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -10,8 +21,6 @@
 
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */

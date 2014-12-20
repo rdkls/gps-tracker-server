@@ -5,14 +5,31 @@ angular.module('app').controller('MainCtrl', function (
     $rootScope,
     $location,
     Config,
+    User,
     Api) {
-    $scope.email = 'nick@nick.com';
-    $scope.password = 'nick';
+
+    $scope.init = function() {
+        //$scope.showRegister = true;
+        $scope.login_user = {
+            'email': 'nick@nick.com',
+            'password':'nick'
+        }
+        $scope.register_user = {};
+    };
 
     $scope.login = function() {
-        // TODO validation
-        Api.user.login(
-            {'email': $scope.email, 'password': $scope.password},
+        User.login(Api, $scope.login_user.email, $scope.login_user.password);
+    }
+    $scope.clickRegister = function() {
+        $scope.showRegister = true;
+    }
+
+    $scope.register = function() {
+        Api.user.register(
+            {   
+                'email'     : $scope.register_user.email,
+                'password'  : $scope.register_user.password
+            },
             function(resp) {
                 $rootScope.user = resp;
                 localStorage.setItem('user', JSON.stringify(resp));
@@ -21,15 +38,5 @@ angular.module('app').controller('MainCtrl', function (
         );
     };
 
-    $scope.register = function() {
-        // TODO validation
-        Api.user.register(
-            {'email': $scope.email, 'password': $scope.password},
-            function(resp) {
-                $rootScope.user = resp;
-                localStorage.setItem('user', JSON.stringify(resp));
-                $location.url('/dash');
-            }
-        );
-    };
+    $scope.init();
   });
