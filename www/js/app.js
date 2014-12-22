@@ -3,9 +3,13 @@
 angular
   .module('app', [
     'ngResource',
-    'ngRoute'
+    'ngRoute',
+    'uiGmapgoogle-maps'
   ])
-  .config(function ($routeProvider) {
+  .config(function (
+    $routeProvider,
+    uiGmapGoogleMapApiProvider
+  ) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -18,4 +22,8 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+    uiGmapGoogleMapApiProvider.configure({
+      key : 'AIzaSyDMLTl_mCtvP038xgjDvgwUhXjV0Ch-ofk',
+      v   : '3.17'
+    });
   });

@@ -4889,6 +4889,10 @@ button.close {
     display: none !important; }
  }
 
+.angular-google-map-container {
+  width: 100%;
+  height: 600px; }
+
 nav.navbar {
   margin-bottom: 0; }
 

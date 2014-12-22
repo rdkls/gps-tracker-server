@@ -36,7 +36,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header">Map Map Map MapMap Map MapMap Map MapMap Map MapMap Map Map</h1>
+          <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options">
+            <ui-gmap-markers models="devices" coords="'self'" fit="true" icon="'icon'"></ui-gmap-markers>
+          </ui-gmap-google-map>
         </div>
       </div>
     </div>

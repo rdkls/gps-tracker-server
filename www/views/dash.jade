@@ -38,4 +38,5 @@ div#wrapper
         div.container-fluid
             div.row
                 div.col-lg-12
-                    h1.page-header Map Map Map MapMap Map MapMap Map MapMap Map MapMap Map Map
+                    ui-gmap-google-map(center='map.center' zoom='map.zoom' draggable='true' options='map.options')
+                        ui-gmap-markers(models='devices' coords="'self'" fit='true' icon="'icon'")
