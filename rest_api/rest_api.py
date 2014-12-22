@@ -150,8 +150,8 @@ def devices(device_id=None):
                 'ipaddr'        : d.ipaddr,
                 'vehicle_plate' : d.vehicle_plate,
                 'is_online'     : d.is_online,
-                'latitude'      : str(d.latitude),
-                'longitude'     : str(d.longitude),
+                'latitude'      : str(d.latitude) if d.latitude else None,
+                'longitude'     : str(d.longitude) if d.longitude else None,
                 'icon'          : 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/car-32.png',
             }
         except:
@@ -164,8 +164,8 @@ def devices(device_id=None):
                 'imei'          : device.imei,
                 'ipaddr'        : device.ipaddr,
                 'is_online'     : device.is_online,
-                'latitude'      : str(device.latitude),
-                'longitude'     : str(device.longitude),
+                'latitude'      : str(device.latitude) if device.latitude else None,
+                'longitude'     : str(device.longitude) if device.longitude else None,
                 'icon'          : 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/car-32.png',
             }
             resp.append(d)
