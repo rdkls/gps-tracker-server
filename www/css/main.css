@@ -4889,6 +4889,13 @@ button.close {
     display: none !important; }
  }
 
+a#device-nav.online {
+  color: black; }
+a#device-nav.offline {
+  color: #888; }
+a#device-nav.viewing {
+  color: #607FE2; }
+
 .angular-google-map-container {
   width: 100%;
   height: 600px; }

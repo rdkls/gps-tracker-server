@@ -17,7 +17,7 @@
           <!--li.sidebar-search-->
           <!--    div.input-group.custom-search-form-->
           <!--        input.form-control(type='text' placeholder='Filter')-->
-          <li ng-repeat="device in devices" ng-click="viewDevice(device.imei)"><a><i class="fa fa-car"></i><span>{{ device.imei }}</span></a>
+          <li ng-repeat="device in devices" ng-click="viewDevice(device.imei)"><a id="device-nav" ng-class="{online: device.is_online, offline: !device.is_online, viewing: device.viewing}"><i class="fa fa-car"></i><span>{{ device.imei }}</span></a>
             <!-- button(class='btn btn-danger' ng-click='removeDevice(device.id)') X-->
           </li>
           <li class="sidebar-search">

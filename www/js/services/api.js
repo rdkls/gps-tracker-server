@@ -31,8 +31,13 @@ angular.module('app').service('Api', function(
                 isArray : true,
                 transformResponse   : function(resp) {
                     data = JSON.parse(resp);
-                    // TODO other manipulation, icon heading etc
-                    return data;
+                    data_changed = [];
+                    for(var i=0;i<data.length;i++) {
+                        d = data[i];
+                        d.icon = d.is_online ? 'img/car-black.png' : 'img/car-grey.png'
+                        data_changed.push(d);
+                    }
+                    return data_changed;
                 },
             },
             remove: {

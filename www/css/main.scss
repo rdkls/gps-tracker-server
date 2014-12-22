@@ -1,5 +1,17 @@
 @import "bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 
+a#device-nav {
+    &.online {
+        color: black;
+    }
+    &.offline {
+        color: #888;
+    }
+    &.viewing {
+        color: #607FE2;
+    }
+}
+
 .angular-google-map-container {
     width   : 100%;
     height  : 600px;

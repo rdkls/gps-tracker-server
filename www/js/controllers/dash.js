@@ -19,7 +19,13 @@ angular.module('app').controller('DashCtrl', function (
 
     };
     $scope.viewDevice = function(imei) {
+        for(var i=0; i<$scope.devices.length; i++) {
+            $scope.devices[i].viewing=null;
+        }
+        // XXX this isn't updating the map correctly ...
+        $scope.devices.filter(function(d) { return d.imei==imei})[0].icon = 'img/car-blue.png';
         console.log('viewDevice ' + imei);
+        $scope.mapRefresh = true;
     };
     $scope.addDevice = function() {
         Api.device.post(
@@ -38,6 +44,9 @@ angular.module('app').controller('DashCtrl', function (
             }
         );
     };
+    $scope.mapRefresh = function() {
+        console.log('sdffsd');
+    }
     $scope.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     uiGmapGoogleMapApi.then(function(maps) {
         console.log('map ready');

@@ -23,7 +23,7 @@ div#wrapper
                     //        input.form-control(type='text' placeholder='Filter')
 
                     li(ng-repeat='device in devices' ng-click='viewDevice(device.imei)')
-                        a
+                        a#device-nav(ng-class='{online: device.is_online, offline: !device.is_online, viewing: device.viewing}')
                             i.fa.fa-car
                             span {{ device.imei }}
                         // button(class='btn btn-danger' ng-click='removeDevice(device.id)') X
