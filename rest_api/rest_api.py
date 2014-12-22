@@ -145,12 +145,14 @@ def devices(device_id=None):
             d = filter(lambda d:str(d.id)==device_id, user.devices)[0]
             resp = {
                 'id'            : str(d.id),
+                'name'          : d.name,
                 'imei'          : d.imei,
                 'ipaddr'        : d.ipaddr,
                 'vehicle_plate' : d.vehicle_plate,
                 'is_online'     : d.is_online,
-                'latitude'      : d.latitude,
-                'longitude'     : d.longitude,
+                'latitude'      : str(d.latitude),
+                'longitude'     : str(d.longitude),
+                'icon'          : 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/car-32.png',
             }
         except:
             raise NotFound()
@@ -162,8 +164,9 @@ def devices(device_id=None):
                 'imei'          : device.imei,
                 'ipaddr'        : device.ipaddr,
                 'is_online'     : device.is_online,
-                'latitude'      : device.latitude,
-                'longitude'     : device.longitude,
+                'latitude'      : str(device.latitude),
+                'longitude'     : str(device.longitude),
+                'icon'          : 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/car-32.png',
             }
             resp.append(d)
     return json.dumps(resp)
