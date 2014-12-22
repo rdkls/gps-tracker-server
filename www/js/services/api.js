@@ -28,7 +28,12 @@ angular.module('app').service('Api', function(
             list: {
                 method  : 'GET',
                 headers : {'X-API-KEY': User.api_key},
-                isArray : true
+                isArray : true,
+                transformResponse   : function(resp) {
+                    data = JSON.parse(resp);
+                    // TODO other manipulation, icon heading etc
+                    return data;
+                },
             },
             remove: {
                 method  : 'DELETE',
