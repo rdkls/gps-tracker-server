@@ -152,7 +152,7 @@ def devices(device_id=None):
                 'is_online'     : d.is_online,
                 'latitude'      : str(d.latitude) if d.latitude else None,
                 'longitude'     : str(d.longitude) if d.longitude else None,
-                'icon'          : 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/car-32.png',
+                'icon'          : 'img/car-black.png'
             }
         except:
             raise NotFound()
@@ -166,7 +166,7 @@ def devices(device_id=None):
                 'is_online'     : device.is_online,
                 'latitude'      : str(device.latitude) if device.latitude else None,
                 'longitude'     : str(device.longitude) if device.longitude else None,
-                'icon'          : 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/car-32.png',
+                'icon'          : 'img/car-black.png'
             }
             resp.append(d)
     return json.dumps(resp)
