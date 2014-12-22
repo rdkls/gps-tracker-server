@@ -11,6 +11,11 @@ if [ $? != 0 ] ; then
     tmux split-window -t ${SESSION_NAME}
     tmux send-keys -t ${SESSION_NAME} 'cd ~/ws/gps' C-m
     tmux send-keys -t ${SESSION_NAME} '. venv/gps/bin/activate' C-m
+    tmux send-keys -t ${SESSION_NAME} './device_gateway.py' C-m
+
+    tmux split-window -t ${SESSION_NAME}
+    tmux send-keys -t ${SESSION_NAME} 'cd ~/ws/gps' C-m
+    tmux send-keys -t ${SESSION_NAME} '. venv/gps/bin/activate' C-m
     tmux send-keys -t ${SESSION_NAME} './rest_api/rest_api.py' C-m
 
     tmux split-window -t ${SESSION_NAME}
