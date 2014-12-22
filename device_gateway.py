@@ -26,4 +26,5 @@ def handle(sock, (clientip, clientport)):
 
 if __name__ == '__main__':
     server = StreamServer((config.DEVICE_GATEWAY_HOST_LISTEN, config.DEVICE_GATEWAY_PORT_LISTEN), handle, spawn=config.DEVICE_GATEWAY_MAX_CONNECTIONS)
+    print 'Device Gateway listening on %s:%s' % (config.DEVICE_GATEWAY_HOST_LISTEN, config.DEVICE_GATEWAY_PORT_LISTEN)
     server.serve_forever()
