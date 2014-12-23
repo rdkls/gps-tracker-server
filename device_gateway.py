@@ -2,6 +2,7 @@
 from gevent.server import StreamServer
 import config
 import sys
+import time
 from models import GPSDevice
 from logger import logger
 
@@ -18,6 +19,7 @@ def handle(sock, (clientip, clientport)):
                 device = GPSDevice.get_by_data(data, ipaddr=clientip)
             except Exception, e:
                 logger.warning(e.message[:256])
+                time.sleep(10)
                 sock.close()
                 return
 
