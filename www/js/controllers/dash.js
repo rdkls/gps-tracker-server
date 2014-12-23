@@ -5,9 +5,11 @@ angular.module('app').controller('DashCtrl', function (
     $rootScope,
     uiGmapGoogleMapApi,
     Config,
+    User,
     Api) {
 
     $scope.init = function() {
+        console.log('dash init');
         $scope.devices = Api.device.list();
         $scope.showAddDevice = true;
 
