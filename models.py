@@ -4,6 +4,7 @@ import datetime
 import mongoengine
 import random
 import hashlib
+from logger import logger
 
 from adapter.adapter import Adapter
 
@@ -126,7 +127,7 @@ class GPSDevice(mongoengine.Document):
                 self.longitude = message.longitude
                 self.save()
                 maps_url = config.GOOGLE_MAPS_URI_FORMAT.format(latitude=message.latitude, longitude=message.longitude)
-                print 'received location from %s: %s' % (self.imei, maps_url)
+                logger.info('received location from %s: %s' % (self.imei, maps_url))
 
         # Get & send responses from queue
         self.retrieve_messages()
