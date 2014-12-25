@@ -12,7 +12,7 @@
                             div.form-group: input.form-control(type='password' ng-model='login_user.password' placeholder='password' ng-required='true')
                             div.form-group: input.btn.btn-lg.btn-success.btn-block(type='submit' value='login')
                             div.text-center
-                                a(ng-click='clickRegister()') Register
+                                a(ng-click='clickRegister()') switch to register
 
                     form#register(ng-submit='register()' ng-if='showRegister' name='registerForm')
                         fieldset
@@ -20,4 +20,4 @@
                             div.form-group: input.form-control(type='password' ng-model='register_user.password' placeholder='password' ng-required='true')
                             div.form-group: input.btn.btn-lg.btn-success.btn-block(type='submit' value='register')
                             div.text-center
-                                a(ng-click='clickLogin()') Login
+                                a(ng-click='clickLogin()') switch to login
