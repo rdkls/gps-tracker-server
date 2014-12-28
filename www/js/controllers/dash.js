@@ -46,7 +46,7 @@ angular.module('app').controller('DashCtrl', function (
         );
     };
     $scope.mapRefresh = function() {
-        console.log('sdffsd');
+        console.log('map refresh');
     }
     $scope.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     uiGmapGoogleMapApi.then(function(maps) {

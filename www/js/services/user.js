@@ -8,7 +8,6 @@ angular.module('app').service('User', function(
         // means it'll be evaluated at time of request and will contain current
         // logged-in user
         this.get_api_key = function() {
-            console.log('get_api_key: ' + self.api_key);
             return self.api_key;
         }
 
