@@ -7,8 +7,6 @@ angular.module('app').controller('AppCtrl', function (
     User,
     Api) {
 
-    $scope.logout = function() {
-        User.logout();
-    };
+    $scope.user = User;
 
   });

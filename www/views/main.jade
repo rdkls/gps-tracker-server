@@ -17,7 +17,10 @@
                     form#register(ng-submit='register()' ng-if='showRegister' name='registerForm')
                         fieldset
                             div.form-group: input.form-control(type='text' ng-model='register_user.email' placeholder='email' ng-required='true')
-                            div.form-group: input.form-control(type='password' ng-model='register_user.password' placeholder='password' ng-required='true')
+                            div.form-group
+                                //i.fa.fa-eye#password-reveal(ng-click='togglePasswordShow()')
+                                input.form-control(type='password' ng-model='register_user.password' placeholder='password' ng-required='true')
+                            div.form-group: input.form-control(type='password' ng-model='register_user.password_again' placeholder='repeat password' ng-required='true')
                             div.form-group: input.btn.btn-lg.btn-success.btn-block(type='submit' value='register')
                             div.text-center
                                 a(ng-click='clickLogin()') switch to login

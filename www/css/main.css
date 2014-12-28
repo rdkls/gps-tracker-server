@@ -4889,6 +4889,12 @@ button.close {
     display: none !important; }
  }
 
+i.fa.fa-eye#password-reveal {
+  position: absolute;
+  right: 40;
+  margin-top: 10;
+  color: #bbb; }
+
 a#device-nav.online {
   color: black; }
 a#device-nav.offline {

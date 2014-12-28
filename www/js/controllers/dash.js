@@ -9,7 +9,6 @@ angular.module('app').controller('DashCtrl', function (
     Api) {
 
     $scope.init = function() {
-        console.log('dash init');
         $scope.devices = Api.device.list();
         $scope.showAddDevice = true;
 
@@ -52,7 +51,6 @@ angular.module('app').controller('DashCtrl', function (
     $scope.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     uiGmapGoogleMapApi.then(function(maps) {
         console.log('map ready');
-        console.log(maps);
     });
 
     $scope.init();

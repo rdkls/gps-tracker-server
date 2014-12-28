@@ -13,7 +13,8 @@ angular.module('app').controller('MainCtrl', function (
         $scope.showRegister = true;
         $scope.register_user = {
             'email': 'nick-' + Math.random() + '@nick.com',
-            'password':'nick'
+            'password':'nick',
+            'password_again':'nick'
         }
         $scope.login_user = {
             'email': 'nick@nick.com',
@@ -21,12 +22,6 @@ angular.module('app').controller('MainCtrl', function (
         }
     };
 
-    $scope.login = function() {
-        User.login(Api, $scope.login_user.email, $scope.login_user.password)
-        .then(function(data) {
-            $location.url('/dash');
-        });
-    }
     $scope.clickLogin = function() {
         $scope.showRegister = false;
     }
@@ -34,11 +29,24 @@ angular.module('app').controller('MainCtrl', function (
         $scope.showRegister = true;
     }
 
-    $scope.register = function() {
-        User.register(Api, $scope.register_user.email, $scope.register_user.password)
+    $scope.login = function() {
+        // Api ref is passed in here to avoid circular dependencies between User-Api
+        User.login(Api, $scope.login_user.email, $scope.login_user.password)
         .then(function(data) {
             $location.url('/dash');
         });
+    }
+
+    $scope.register = function() {
+        if($scope.register_user.password != $scope.register_user.password_again) {
+            alert('Passwords must match');
+        }
+        else {
+            User.register(Api, $scope.register_user.email, $scope.register_user.password)
+            .then(function(data) {
+                $location.url('/dash');
+            });
+        }
     };
 
     $scope.init();

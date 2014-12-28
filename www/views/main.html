@@ -27,7 +27,11 @@
                 <input type="text" ng-model="register_user.email" placeholder="email" ng-required="true" class="form-control"/>
               </div>
               <div class="form-group">
+                <!--i.fa.fa-eye#password-reveal(ng-click='togglePasswordShow()')-->
                 <input type="password" ng-model="register_user.password" placeholder="password" ng-required="true" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <input type="password" ng-model="register_user.password_again" placeholder="repeat password" ng-required="true" class="form-control"/>
               </div>
               <div class="form-group">
                 <input type="submit" value="register" class="btn btn-lg btn-success btn-block"/>

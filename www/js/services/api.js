@@ -3,7 +3,6 @@ angular.module('app').service('Api', function(
     $http,
     User,
     Config) {
-
         this.user = $resource(Config.api_base_url + '/user/:id', {}, {
             register: {
                 method  : 'POST',
@@ -15,11 +14,11 @@ angular.module('app').service('Api', function(
             },
             get: {
                 method  : 'GET',
-                headers : {'X-API-KEY': User.api_key},
+                headers : {'X-API-KEY': User.get_api_key},
             },
             list: {
                 method  : 'GET',
-                headers : {'X-API-KEY': User.api_key},
+                headers : {'X-API-KEY': User.get_api_key},
                 isArray : true
             }
         });
@@ -27,7 +26,7 @@ angular.module('app').service('Api', function(
         this.device = $resource(Config.api_base_url + '/device/:id', {}, {
             list: {
                 method  : 'GET',
-                headers : {'X-API-KEY': User.api_key},
+                headers : {'X-API-KEY': User.get_api_key},
                 isArray : true,
                 transformResponse   : function(resp) {
                     data = JSON.parse(resp);
@@ -42,12 +41,11 @@ angular.module('app').service('Api', function(
             },
             remove: {
                 method  : 'DELETE',
-                headers : {'X-API-KEY': User.api_key},
+                headers : {'X-API-KEY': User.get_api_key},
             },
             post: {
                 method  : 'POST',
-                headers : {'X-API-KEY': User.api_key},
+                headers : {'X-API-KEY': User.get_api_key},
             }
         });
-
     })

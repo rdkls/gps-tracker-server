@@ -1,5 +1,12 @@
 @import "bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 
+i.fa.fa-eye#password-reveal {
+    position    : absolute;
+    right       : 40;
+    margin-top  : 10;
+    color       : #bbb;
+}
+
 a#device-nav {
     &.online {
         color: black;
