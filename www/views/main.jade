@@ -24,3 +24,30 @@
                             div.form-group: input.btn.btn-lg.btn-success.btn-block(type='submit' value='register')
                             div.text-center
                                 a(ng-click='clickLogin()') switch to login
+
+            .panel-body To Use
+                ol
+                    li Register here
+                        br
+                        | Don't forget your password as there's no reset yet
+                    li Once logged in, add your device's IMEI
+                        br
+                        | Get this by SMSing the device, instructions in manual
+                    li Tell your device to start using gateway 
+                        b 59.167.194.239:9000
+
+            .panel-body Notes
+                ul
+                    li Currently only 
+                        a(href='http://coban.manufacturer.globalsources.com/si/6008828124217/pdtl/Car-GPS/1084239930/OBD-II-GPS306-tracker.htm') Coban GPS 306 device
+                        |  (apparently chipset is "TK102") is supported
+                    li Why did I make this? Fun, plus I didn't want my GPS data going to some company in China
+                    li This is a privately-run proof-of-concept done as a hobby. That's why it's so feature-poor =) You're welcome to use it, but don't expect much
+                    li Use of the system is entirely at your own risk, I take no responsibility for ... anything
+                    li Your data will reside on my private server. While I'll take basic security precautions and won't intentionally publish or pass on to 3rd parties, if I do get hacked, well it's out of my hands
+                    li
+                        a(href='https://trello.com/b/yqAj7edK/gps-tracker-server') Trello Board
+                    li
+                        a(href='https://github.com/rdkls/gps-tracker-server') Source Code
+                    li Questions, comments or metaphysical observations feel free to email me 
+                        span(style="unicode-bidi:bidi-override; direction: rtl;") moc.liamg@ognihtspg
