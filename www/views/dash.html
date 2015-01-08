@@ -17,7 +17,7 @@
           <!--li.sidebar-search-->
           <!--    div.input-group.custom-search-form-->
           <!--        input.form-control(type='text' placeholder='Filter')-->
-          <li ng-repeat="device in devices" ng-click="viewDevice(device.imei)"><a id="device-nav" ng-class="{online: device.is_online, offline: !device.is_online, viewing: device.viewing}"><i class="fa fa-car"></i><span>{{ device.imei }}</span></a>
+          <li ng-repeat="device in devices" ng-click="viewDevice(device.id)"><a id="device-nav" ng-class="{online: device.is_online, offline: !device.is_online, viewing: device.viewing}"><i class="fa fa-car"></i><span>{{ device.imei }}</span></a>
             <!-- button(class='btn btn-danger' ng-click='removeDevice(device.id)') X-->
           </li>
           <li class="sidebar-search">
@@ -37,7 +37,8 @@
       <div class="row">
         <div class="col-lg-12">
           <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options">
-            <ui-gmap-markers models="devices" coords="'self'" fit="true" icon="'icon'"></ui-gmap-markers>
+            <!-- ui-gmap-markers(models='devices' coords="'self'" fit='true' icon="'icon'")-->
+            <ui-gmap-marker ng-repeat="device in devices" coords="device.coords" idKey="device.id" icon="device.icon" options="device.marker_options" click="viewDevice"></ui-gmap-marker>
           </ui-gmap-google-map>
         </div>
       </div>

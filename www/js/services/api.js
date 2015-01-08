@@ -33,7 +33,9 @@ angular.module('app').service('Api', function(
                     data_changed = [];
                     for(var i=0;i<data.length;i++) {
                         d = data[i];
-                        d.icon = d.is_online ? 'img/car-black.png' : 'img/car-grey.png'
+                        d.icon = d.is_online ? Config.icon_device_online : Config.icon_device_offline;
+                        d.coords = {latitude: d.latitude, longitude: d.longitude};
+                        d.marker_options = {};
                         data_changed.push(d);
                     }
                     return data_changed;
