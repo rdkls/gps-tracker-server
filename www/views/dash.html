@@ -5,7 +5,7 @@
     <ul class="nav navbar-top-links navbar-right">
       <li ng-if="user" class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-user fa-fw"></i><span>{{ user.email }}</span><i class="fa fa-caret-down"></i></a>
         <ul class="dropdown-menu dropdown-user">
-          <li><a href="#"><i class="fa fa-user fa-fw">User Profile</i></a></li>
+          <!-- li: a(href='#'): i.fa.fa-user.fa-fw User Profile-->
           <!-- li: a(href='#'): i.fa.fa-gear.fa-fw Settings-->
           <li><a ng-click="user.logout()"><i class="fa fa-sign-out fa-fw">Logout</i></a></li>
         </ul>

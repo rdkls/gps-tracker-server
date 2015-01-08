@@ -1,4 +1,3 @@
-
 div#wrapper
     nav.navbar.navbar-default.navbar-static-top(role='navigation')
         div.navbar-header
@@ -11,7 +10,7 @@ div#wrapper
                     span {{ user.email }}
                     i.fa.fa-caret-down
                 ul.dropdown-menu.dropdown-user
-                    li: a(href='#'): i.fa.fa-user.fa-fw User Profile
+                    // li: a(href='#'): i.fa.fa-user.fa-fw User Profile
                     // li: a(href='#'): i.fa.fa-gear.fa-fw Settings
                     li: a(ng-click='user.logout()'): i.fa.fa-sign-out.fa-fw Logout
 
