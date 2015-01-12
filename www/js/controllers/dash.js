@@ -23,7 +23,7 @@ angular.module('app').controller('DashCtrl', function (
         // Zoom map to device
         var d = $scope.devices.filter(function(d) {return d.id==id})[0];
         $scope.map.center = d.coords;
-        $scope.map.zoom = 12;
+        $scope.map.zoom = 14;
 
         // Also allow us to pass in marker object (from marker click event)
         if('object'==typeof(id)) {
