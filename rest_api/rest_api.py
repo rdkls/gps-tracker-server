@@ -87,8 +87,8 @@ def device_messages(device_id):
             'state'             : message.state,
             'imei'              : message.imei,
             'message_datastring': message.message_datastring,
-            'latitude'          : message.latitude,
-            'longitude'         : message.longitude,
+            'latitude'          : str(message.latitude) if message.latitude else None,
+            'longitude'         : str(message.longitude) if message.longitude else None,
             'created'           : message.created.isoformat(),
         })
     return json.dumps(resp)
