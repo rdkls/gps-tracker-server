@@ -21,7 +21,7 @@ div#wrapper
                     //    div.input-group.custom-search-form
                     //        input.form-control(type='text' placeholder='Filter')
 
-                    li(ng-repeat='device in devices' ng-click='viewDevice(device.id)')
+                    li.noselect(ng-repeat='device in devices' ng-click='viewDevice(device.id)' ng-dblclick='zoomDevice(device.id)')
                         a#device-nav(ng-class='{online: device.is_online, offline: !device.is_online, viewing: device.viewing}')
                             i.fa.fa-car
                             span {{ device.imei }}
@@ -37,6 +37,6 @@ div#wrapper
         div.container-fluid
             div.row
                 div.col-lg-12
-                    ui-gmap-google-map(center='map.center' zoom='map.zoom' draggable='true' options='map.options' fit='true')
+                    ui-gmap-google-map(center='map.center' zoom='map.zoom' draggable='true' options='map.options' pan='true')
                         ui-gmap-markers(models='devices' coords="'self'" fit='true' icon="'icon'" click='viewDevice' idKey='"id"')
                         //ui-gmap-marker(ng-repeat='device in devices' coords='device.coords' idKey='device.id' icon='device.icon' options='device.marker_options' click='viewDevice')
