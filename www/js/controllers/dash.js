@@ -69,13 +69,23 @@ angular.module('app').controller('DashCtrl', function (
     };
     $scope.trackOnce = function(device_id) {
         console.log('track ' + device_id);
+        var p = Api.device.trackOnce({id: device_id});
+        p.$promise.then(
+            function(data_success) {
+                alert('Track request successfully sent');
+            },
+            function(data_fail) {
+                alert('Sorry, there was a problem sending the track request');
+            }
+        );
     };
     $scope.trackMultiple = function(device_id) {
         alert("This isn't implemented yet");
     };
     $scope.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     uiGmapGoogleMapApi.then(function(maps) {
-        console.log('map ready');
+        // for easier testing with my own device
+        //$scope.viewDevice('549785b73a37955f54469b8a');
     });
 
     $scope.init();

@@ -23,7 +23,7 @@ angular.module('app').service('Api', function(
             }
         });
 
-        this.device = $resource(Config.api_base_url + '/device/:id', {}, {
+        this.device = $resource(Config.api_base_url + '/device/:id', {id: '@id'}, {
             list: {
                 method  : 'GET',
                 headers : {'X-API-KEY': User.get_api_key},
@@ -48,6 +48,11 @@ angular.module('app').service('Api', function(
             post: {
                 method  : 'POST',
                 headers : {'X-API-KEY': User.get_api_key},
+            },
+            trackOnce: {
+                method  : 'POST',
+                headers : {'X-API-KEY': User.get_api_key},
+                url     : Config.api_base_url + '/device/:id/trackOnce'
             }
         });
     })
