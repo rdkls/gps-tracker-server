@@ -21,7 +21,7 @@ div#wrapper
                     //    div.input-group.custom-search-form
                     //        input.form-control(type='text' placeholder='Filter')
 
-                    li.noselect(ng-repeat='device in devices' ng-click='viewDevice(device.id)' ng-dblclick='zoomDevice(device.id)')
+                    li.noselect(ng-repeat='device in devices' ng-click='viewDevice(device.id)')
                         a#device-nav(ng-class='{online: device.is_online, offline: !device.is_online, viewing: device.viewing}')
                             i.fa.fa-car
                             span {{ device.imei }}

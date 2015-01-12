@@ -19,14 +19,12 @@ angular.module('app').controller('DashCtrl', function (
         };
 
     };
-    $scope.zoomDevice = function(id) {
-        console.log('zoom');
+    $scope.viewDevice = function(id) {
+        // Zoom map to device
         var d = $scope.devices.filter(function(d) {return d.id==id})[0];
-        console.log(d);
         $scope.map.center = d.coords;
         $scope.map.zoom = 12;
-    };
-    $scope.viewDevice = function(id) {
+
         // Also allow us to pass in marker object (from marker click event)
         if('object'==typeof(id)) {
             id = id.key;
