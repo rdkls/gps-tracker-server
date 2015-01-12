@@ -68,7 +68,6 @@ angular.module('app').controller('DashCtrl', function (
         }
     };
     $scope.trackOnce = function(device_id) {
-        console.log('track ' + device_id);
         var p = Api.device.trackOnce({id: device_id});
         p.$promise.then(
             function(data_success) {
