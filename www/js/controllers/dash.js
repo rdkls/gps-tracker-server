@@ -32,13 +32,22 @@ angular.module('app').controller('DashCtrl', function (
         $scope.devices.filter(function(d) {return d.id==id})[0]['viewing'] = true;
     };
     $scope.addDevice = function() {
-        Api.device.post(
-            {'imei'  : $scope.newImei},
-            function(resp) {
-                $scope.devices = Api.device.list();
-            }
-        );
-        $scope.newImei = null;
+        if($scope.newImei.match(/\d{15}/)) {
+            var p = Api.device.post({'imei'  : $scope.newImei});
+            p.$promise.then(
+                function(resp_succ) {
+                    $scope.devices = Api.device.list();
+                    $scope.newImei = null;
+                },
+                function(resp_err) {
+                    // Intentionally uninformative; perhaps device already registered by another user
+                    alert("Sorry, can't add that device");
+                }
+            );
+        }
+        else {
+            alert('IMEI should be 15 digits');
+        }
     };
     $scope.removeDevice = function(device_id) {
         Api.device.remove(
