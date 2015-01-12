@@ -137,10 +137,15 @@ class GPSDevice(mongoengine.Document):
         self.retrieve_messages()
 
     def retrieve_messages(self):
+        """ Retrieve messages destined for this device
+        """
         if not self.imei:
             return
         m = Message.dequeue_response(imei=self.imei)
         while m:
+            if not m.message_datastring:
+                m.message_datastring = self.adapter.encode(m)
+                m.save()
             self.responses.append(self.adapter.encode(m))
             m = Message.dequeue_response(imei=self.imei)
 
