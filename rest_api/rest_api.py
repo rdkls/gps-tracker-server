@@ -68,6 +68,24 @@ def user_register():
         'id'        : str(u.id),
     })
 
+@app.route('/device/<device_id>/trackOnce', methods=['POST'])
+def device_track_once(device_id):
+    user = check_auth()
+    try:
+        device = GPSDevice.objects.get(id=device_id)
+    except (GPSDevice.DoesNotExist, mongoengine.ValidationError):
+        raise NotFound()
+    except GPSDevice.MultipleObjectsReturned:
+        raise
+    if device not in user.devices:
+        raise Unauthorized()
+    print 'IMEI %s requesting to trackOnce' % device.imei
+    m = Message()
+    m.imei = device.imei
+    m.message_type = config.MESSAGE_TYPE_REQ_LOCATION
+    m.save()
+    return 'location request sent'
+
 @app.route('/user/<user_id>', methods=['GET'])
 @app.route('/user', methods=['GET'])
 def user_list(user_id=None):
