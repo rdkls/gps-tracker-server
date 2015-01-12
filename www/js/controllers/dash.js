@@ -13,8 +13,8 @@ angular.module('app').controller('DashCtrl', function (
         $scope.showAddDevice = true;
 
         $scope.map = {
-            center  : {latitude: "-37.77", longitude: "144.97"},
-            zoom    : 12,
+            center  : {latitude: 0, longitude: 0},
+            zoom    : 1,
             options : {}
         };
 
@@ -22,7 +22,10 @@ angular.module('app').controller('DashCtrl', function (
     $scope.viewDevice = function(id) {
         // Also allow us to pass in marker object (from marker click event)
         if('object'==typeof(id)) {
-            id = id.idKey;
+            id = id.key;
+            // Referring to 'idKey' needed if using repeated ui-gmap-marker
+            // Otherwise, when using one -markers it's just "key"
+            //id = id.idKey;
         }
         for(var i=0; i<$scope.devices.length; i++) {
             $scope.devices[i].viewing = null;
