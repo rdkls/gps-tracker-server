@@ -21,11 +21,21 @@ div#wrapper
                     //    div.input-group.custom-search-form
                     //        input.form-control(type='text' placeholder='Filter')
 
-                    li.noselect(ng-repeat='device in devices' ng-click='viewDevice(device.id)')
+                    li.leftnav(ng-repeat='device in devices' ng-click='viewDevice(device.id)')
                         a#device-nav(ng-class='{online: device.is_online, offline: !device.is_online, viewing: device.viewing}')
-                            i.fa.fa-car
-                            span {{ device.imei }}
-                        // button(class='btn btn-danger' ng-click='removeDevice(device.id)') X
+                            i.fa.fa-car.leftnav
+                            div.leftnav {{ device.imei }}
+                                span.offline(ng-if='!device.is_online') (offline)
+                                div.leftnav-menu(ng-show='device.viewing')
+                                    span.btn-group(ng-if='device.is_online')
+                                        button.btn.btn-success.dropdown-toggle(type='button' data-toggle='dropdown')
+                                            | Track
+                                            span.caret
+                                        ul.dropdown-menu(role='menu')
+                                            li.dropdown-menu-item(ng-click='trackOnce(device.id)') Once
+                                            li.dropdown-menu-item(ng-click='trackMultiple(device.id)') Continuous
+                                            li.dropdown-menu-item(ng-click='trackMultiple(device.id)') OBD Data
+                                    span: button.btn.btn-danger(ng-click='removeDevice(device.id)') Delete
 
                     li.sidebar-search
                         div.input-group.custom-search-form

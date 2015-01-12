@@ -58,12 +58,20 @@ angular.module('app').controller('DashCtrl', function (
         }
     };
     $scope.removeDevice = function(device_id) {
-        Api.device.remove(
-            {'id': device_id},
-            function(resp) {
-                $scope.devices = Api.device.list();
-            }
-        );
+        if(confirm('Remove this device?')) {
+            Api.device.remove(
+                {'id': device_id},
+                function(resp) {
+                    $scope.devices = Api.device.list();
+                }
+            );
+        }
+    };
+    $scope.trackOnce = function(device_id) {
+        console.log('track ' + device_id);
+    };
+    $scope.trackMultiple = function(device_id) {
+        alert("This isn't implemented yet");
     };
     $scope.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     uiGmapGoogleMapApi.then(function(maps) {

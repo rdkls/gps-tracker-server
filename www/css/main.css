@@ -4889,13 +4889,26 @@ button.close {
     display: none !important; }
  }
 
-.noselect {
+.leftnav {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  display: inline-block;
+  vertical-align: top; }
+
+div.leftnav-menu {
+  margin-top: 10px; }
+
+li.dropdown-menu-item {
+  color: #888;
+  border: none !important;
+  padding: 10px;
+  cursor: hand; }
+  li.dropdown-menu-item:hover {
+    background: #eee; }
 
 i.fa.fa-eye#password-reveal {
   position: absolute;
@@ -4909,6 +4922,9 @@ a#device-nav.offline {
   color: #888; }
 a#device-nav.viewing {
   color: #607FE2; }
+
+span.offline {
+  color: #888; }
 
 .angular-google-map-container {
   width: 100%;

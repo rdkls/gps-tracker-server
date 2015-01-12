@@ -17,9 +17,17 @@
           <!--li.sidebar-search-->
           <!--    div.input-group.custom-search-form-->
           <!--        input.form-control(type='text' placeholder='Filter')-->
-          <li ng-repeat="device in devices" ng-click="viewDevice(device.id)" class="noselect"><a id="device-nav" ng-class="{online: device.is_online, offline: !device.is_online, viewing: device.viewing}"><i class="fa fa-car"></i><span>{{ device.imei }}</span></a>
-            <!-- button(class='btn btn-danger' ng-click='removeDevice(device.id)') X-->
-          </li>
+          <li ng-repeat="device in devices" ng-click="viewDevice(device.id)" class="leftnav"><a id="device-nav" ng-class="{online: device.is_online, offline: !device.is_online, viewing: device.viewing}"><i class="fa fa-car leftnav"></i>
+              <div class="leftnav">{{ device.imei }}<span ng-if="!device.is_online" class="offline">(offline)</span>
+                <div ng-show="device.viewing" class="leftnav-menu"><span ng-if="device.is_online" class="btn-group">
+                    <button type="button" data-toggle="dropdown" class="btn btn-success dropdown-toggle">Track<span class="caret"></span></button>
+                    <ul role="menu" class="dropdown-menu">
+                      <li ng-click="trackOnce(device.id)" class="dropdown-menu-item">Once</li>
+                      <li ng-click="trackMultiple(device.id)" class="dropdown-menu-item">Continuous</li>
+                      <li ng-click="trackMultiple(device.id)" class="dropdown-menu-item">OBD Data</li>
+                    </ul></span><span>
+                    <button ng-click="removeDevice(device.id)" class="btn btn-danger">Delete</button></span></div>
+              </div></a></li>
           <li class="sidebar-search">
             <div class="input-group custom-search-form">
               <form ng-show="showAddDevice" ng-submit="addDevice()">
