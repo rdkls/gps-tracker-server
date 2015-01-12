@@ -68,6 +68,31 @@ def user_register():
         'id'        : str(u.id),
     })
 
+@app.route('/device/<device_id>/messages', methods=['GET'])
+def device_messages(device_id):
+    user = check_auth()
+    try:
+        device = GPSDevice.objects.get(id=device_id)
+    except (GPSDevice.DoesNotExist, mongoengine.ValidationError):
+        raise NotFound()
+    except GPSDevice.MultipleObjectsReturned:
+        raise
+    if device not in user.devices:
+        raise Unauthorized()
+    resp = []
+    for message in device.messages:
+        resp.append({
+            'id'                : str(message.id),
+            'message_type'      : message.message_type,
+            'state'             : message.state,
+            'imei'              : message.imei,
+            'message_datastring': message.message_datastring,
+            'latitude'          : message.latitude,
+            'longitude'         : message.longitude,
+            'created'           : message.created.isoformat(),
+        })
+    return json.dumps(resp)
+
 @app.route('/device/<device_id>/trackOnce', methods=['POST'])
 def device_track_once(device_id):
     user = check_auth()

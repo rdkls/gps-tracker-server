@@ -50,6 +50,10 @@ class GPSDevice(mongoengine.Document):
     longitude = mongoengine.DecimalField()
 
     @property
+    def messages(self):
+        return Message.objects.filter(imei=self.imei).order_by('created')
+
+    @property
     def is_online(self):
         if not self.imei:
             return False
