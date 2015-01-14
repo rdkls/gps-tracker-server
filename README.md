@@ -80,4 +80,4 @@ With virtualenv activated, from repo root just run 'nosetests'
 * [TK103 GPS Tracker](http://en.wikibooks.org/wiki/TK103_GPS_Tracker)
 * [Traccar](http://www.traccar.org/) - much more fully-fledged open source server, Java
 * [my-GPS](http://www.my-gps.org/index-en.php) - free hosted solution (web signup didn't work for me when I tried it ...) - PHP
-* (OpenGTS)[http://opengts.sourceforge.net/OpenGTS_Config.pdf] - widely-used, open source, Java
+* [OpenGTS](http://opengts.sourceforge.net) - widely-used, open source, Java
