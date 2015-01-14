@@ -1,6 +1,10 @@
 # GPS Tracker Server #
 Manage and display locations of GPS tracking devices
 
+## Screenshot ##
+This was from my demo system just before decomissioning, with live data from my actual device.
+![Screenshot of GPS Thingo](doc/gps-tracker-thingo-screenshot.png "Screenshot of GPS Tracker Thingo v0.000001 Alpha etc")
+
 ## Why ##
 My motorcycle was stolen, and I really wished I had a way to track it down.
 
@@ -69,10 +73,6 @@ In another tab: `cat sample-reqs/tkip102-1.txt | nc localhost 9000`
 
 ## Running Tests ##
 With virtualenv activated, from repo root just run 'nosetests'
-
-## Screenshot ##
-This was from my demo system just before decomissioning, with live data from my actual device.
-![Screenshot of GPS Thingo](doc/gps-tracker-thingo-screenshot.png "Screenshot of GPS Tracker Thingo v0.000001 Alpha etc")
 
 ## Links ##
 * [Collection of docs on the GPS tracker devices by Barbu Dor](https://drive.google.com/drive/u/0/#folders/0B9QofkYKWsMuZnIwZ1BqeXhzQlE) (thanks Barbu!)
