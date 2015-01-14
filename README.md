@@ -28,7 +28,7 @@ For anyone interested, the other things I thought would be cool to do are on [th
 GPS Tracker Device <--> Device Gateway <--> MongoDB <--> REST API <--> Web Frontend
 
 ### Devices ###
-These devices use GPRS (so you need a SIM with some credit) to talk over the net to an admin server (TCP or UDP). 
+These devices use GPRS (so you need a SIM with some credit) to talk over the net to an admin server (which I call "device gateway") via TCP or UDP. 
 The protocols are pretty simple strings containing commands (e.g. send me your location) and responses (e.g. my location is lat.x long.y)
 
 You configure them by sending an SMS 
