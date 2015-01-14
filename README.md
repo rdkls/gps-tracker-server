@@ -4,7 +4,7 @@ Manage and display locations of GPS tracking devices
 ## Why ##
 My motorcycle was stolen, and I really wished I had a way to track it down.
 
-I knew it had an OBDII port (like most cars, not so many bikes), which I had previously used to flash the ECU and log engine data, and thought, wouldn't it be good if it was fitted with a GPS tracker which just plugged into that (i.e. no cutting/soldering required).
+I knew it had an OBDII port (like most cars, not so many bikes), which I had previously used to flash the ECU and log engine data, and thought, wouldn't it be cool if it was fitted with a GPS tracker which just plugged into that (i.e. no cutting/soldering required).
 
 I found just such devices (specifically the [Coban GPS306](http://www.coban.net/html/2014/07/23/2014072306120056640641.html)) available [on eBay](http://www.ebay.com/sch/i.html?_from=R40&_trksid=p2047675.m570.l1313.TR11.TRC1.A0.H0.Xcoban+gps306&_nkw=coban+gps306&_sacat=0) for USD$60 and bought one.
 
@@ -13,32 +13,6 @@ By default the devices come configured to use [www.gpstrackerxy.com](http://www.
 The other open source solutions out there looked ugly, heavy, or clunky. So I made my own.
 
 So the primary use case is: "as myself, I want to find where my bike is, so that I can get it the hell back" =)
-
-## Overview ##
-GPS Tracker Device <--> Device Gateway <--> MongoDB <--> REST API <--> Web Frontend
-
-### Devices ###
-These devices use GPRS (so you need a SIM with some credit) to talk over the net to an admin server (TCP or UDP).
-The protocols are pretty simple strings containing commands (e.g. send me your location) and responses (e.g. my location is lat.x long.y)
-
-You configure them by sending an SMS
-e.g. to tell my device to use my home gateway, I sent it an SMS containing "adminip8888 59.167.194.249 9000" (9000 is the port)
-After that, it's talking to my device gateway.
-
-### Device Gateway ###
-TCP socket server using gevent, [mongoengine](http://mongoengine.org/) for ODM/ORM
-
-The gateway can send commands to the devices (mongodb used to store these, as well as all other data)
-
-### REST API ###
-Then there's a REST API ([python flask](http://flask.pocoo.org/), [mongoengine](http://mongoengine.org/) for ORM/ODM) talking to the DB
-
-I did initially try [eve-mongoengine](https://github.com/hellerstanislav/eve-mongoengine) and [flask-mongorest](https://github.com/elasticsales/flask-mongorest). Though they were great to quickly get basics up, I found them too restrictive (plus, from past experience I know the latter has some serious bugs and is horribly unmaintained).
-Plus - for Version Zero I only needed a few endpoints quickly knocked up, hence DIY!
-
-### Web Frontend ###
-Angular, Bootstrap, Jade, Sass, Bower, Gulp
-TBH web's not my strong point, but with these excellent tools I managed!
 
 ## Current Status ##
 Currently the device gateway handles device initialization, heartbeat, and location request/response.
@@ -49,6 +23,32 @@ Currently only works for the [Coban GPS306](http://www.coban.net/html/2014/07/23
 HOWEVER - the system /is/ architected to make additional device support easy to add.
 
 For anyone interested, the other things I thought would be cool to do are on [the Trello board](https://trello.com/b/yqAj7edK/gps-thingo)
+
+## Overview ##
+GPS Tracker Device <--> Device Gateway <--> MongoDB <--> REST API <--> Web Frontend
+
+### Devices ###
+These devices use GPRS (so you need a SIM with some credit) to talk over the net to an admin server (TCP or UDP). 
+The protocols are pretty simple strings containing commands (e.g. send me your location) and responses (e.g. my location is lat.x long.y)
+
+You configure them by sending an SMS 
+e.g. to tell my device to use my home gateway, I sent it an SMS containing "adminip8888 59.167.194.249 9000" (9000 is the port) 
+After that, it's talking to my device gateway.
+
+### Device Gateway ###
+TCP socket server using gevent, [mongoengine](http://mongoengine.org/) for ODM/ORM
+
+The gateway can send commands to the devices (mongodb used to store these, as well as all other data)
+
+### REST API ###
+Then there's a REST API ([python flask](http://flask.pocoo.org/), [mongoengine](http://mongoengine.org/) for ORM/ODM) talking to the DB
+
+I did initially try [eve-mongoengine](https://github.com/hellerstanislav/eve-mongoengine) and [flask-mongorest](https://github.com/elasticsales/flask-mongorest). Though they were great to quickly get basics up, I found them too restrictive (plus, from past experience I know the latter has some serious bugs and is horribly unmaintained). 
+Plus - for Version Zero I only needed a few endpoints quickly knocked up, hence DIY!
+
+### Web Frontend ###
+Angular, Bootstrap, Jade, Sass, Bower, Gulp 
+TBH web's not my strong point, but with these excellent tools I managed!
 
 ## Server Setup ##
 This is very shorthand and assumes you're familiar with the stuff in use.
