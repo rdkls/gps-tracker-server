@@ -28,11 +28,11 @@ For anyone interested, the other things I thought would be cool to do are on [th
 GPS Tracker Device <--> Device Gateway <--> MongoDB <--> REST API <--> Web Frontend
 
 ### Devices ###
-These devices use GPRS (so you need a SIM with some credit) to talk over the net to an admin server (which I call "device gateway") via TCP or UDP. 
+These devices use GPRS (so you need a SIM with some credit) to talk over the net to an admin server (which I call "device gateway") via TCP or UDP.  
 The protocols are pretty simple strings containing commands (e.g. send me your location) and responses (e.g. my location is lat.x long.y)
 
-You configure them by sending an SMS 
-e.g. to tell my device to use my home gateway, I sent it an SMS containing "adminip8888 59.167.194.249 9000" (9000 is the port) 
+You configure them by sending an SMS  
+e.g. to tell my device to use my home gateway, I sent it an SMS containing "adminip8888 59.167.194.249 9000" (9000 is the port)  
 After that, it's talking to my device gateway.
 
 ### Device Gateway ###
@@ -43,11 +43,11 @@ The gateway can send commands to the devices (mongodb used to store these, as we
 ### REST API ###
 Then there's a REST API ([python flask](http://flask.pocoo.org/), [mongoengine](http://mongoengine.org/) for ORM/ODM) talking to the DB
 
-I did initially try [eve-mongoengine](https://github.com/hellerstanislav/eve-mongoengine) and [flask-mongorest](https://github.com/elasticsales/flask-mongorest). Though they were great to quickly get basics up, I found them too restrictive (plus, from past experience I know the latter has some serious bugs and is horribly unmaintained). 
+I did initially try [eve-mongoengine](https://github.com/hellerstanislav/eve-mongoengine) and [flask-mongorest](https://github.com/elasticsales/flask-mongorest). Though they were great to quickly get basics up, I found them too restrictive (plus, from past experience I know the latter has some serious bugs and is horribly unmaintained).  
 Plus - for Version Zero I only needed a few endpoints quickly knocked up, hence DIY!
 
 ### Web Frontend ###
-Angular, Bootstrap, Jade, Sass, Bower, Gulp 
+Angular, Bootstrap, Jade, Sass, Bower, Gulp  
 TBH web's not my strong point, but with these excellent tools I managed!
 
 ## Server Setup ##
